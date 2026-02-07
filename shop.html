@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop | VEYRAL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="bg-white">
+    <header class="fixed w-full z-50 bg-white bg-opacity-90 backdrop-blur-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold">VEYRAL</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="shop.html" class="nav-link font-medium">Shop</a>
+                <a href="collections.html" class="nav-link">Collections</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="journal.html" class="nav-link">Journal</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="#"><i data-feather="search"></i></a>
+                <a href="cart.html"><i data-feather="shopping-bag"></i></a>
+                <button class="md:hidden" id="menu-toggle">
+                    <i data-feather="menu"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white w-full px-6 py-4 border-t">
+            <div class="flex flex-col space-y-4">
+                <a href="shop.html" class="nav-link font-medium">Shop</a>
+                <a href="collections.html" class="nav-link">Collections</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="journal.html" class="nav-link">Journal</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-24">
+        <!-- Shop Header -->
+        <section class="py-12 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Shop All</h1>
+                <p class="text-gray-600">Discover our premium clothing collection</p>
+            </div>
+        </section>
+
+        <!-- Filters -->
+        <section class="py-8 border-b">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                    <div class="mb-4 md:mb-0">
+                        <span class="text-sm text-gray-500">Showing 1-8 of 8 products</span>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 w-full md:w-auto">
+                        <div class="relative dropdown">
+                            <button class="flex items-center space-x-2 border px-4 py-2 rounded-full">
+                                <span>Category</span>
+                                <i data-feather="chevron-down" class="w-4 h-4"></i>
+                            </button>
+                            <div
+                                class="dropdown-menu hidden absolute z-10 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Tops</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Bottoms</a>
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Outerwear</a>
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Accessories</a>
+                            </div>
+                        </div>
+
+                        <div class="relative dropdown">
+                            <button class="flex items-center space-x-2 border px-4 py-2 rounded-full">
+                                <span>Sort By</span>
+                                <i data-feather="chevron-down" class="w-4 h-4"></i>
+                            </button>
+                            <div
+                                class="dropdown-menu hidden absolute z-10 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Price: Low
+                                    to High</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Price: High
+                                    to Low</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Newest</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Best
+                                    Selling</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Grid -->
+        <section class="py-12">
+            <div class="container mx-auto px-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                    <!-- Product 1 -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden" data-aos="fade-up">
+                        <div class="relative overflow-hidden h-80">
+                            <img src="https://i0.wp.com/www.uniformza.com/wp-content/uploads/2020/07/312-Classic-Oversized-Shirt-White-Detail.jpg?fit=1501%2C2250&ssl=1"
+                                alt="Classic White Shirt" class="w-full h-full object-cover product-image">
+                            <div
+                                class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+                                <button
+                                    class="btn-primary px-6 py-2 rounded-full font-medium opacity-0 hover:opacity-100 transform translate-y-4 hover:translate-y-0 transition-all duration-300">Quick
+                                    View</button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold mb-1">Classic White Shirt</h3>
+                            <p class="text-gray-600 text-sm mb-2">Premium cotton</p>
+                            <p class="font-bold">R599.99</p>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden" data-aos="fade-up"
+                        data-aos-delay="100">
+                        <div class="relative overflow-hidden h-80">
+                            <img src="https://www.brooktaverner.co.uk/media/catalog/product/cache/ac7ff1d745bed6c9eaee1b53e51b2680/b/r/branmarket-d-flat_4.jpg"
+                                alt="Wool Blend Trousers" class="w-full h-full object-cover product-image">
+                            <div
+                                class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+                                <button
+                                    class="btn-primary px-6 py-2 rounded-full font-medium opacity-0 hover:opacity-100 transform translate-y-4 hover:translate-y-0 transition-all duration-300">Quick
+                                    View</button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold mb-1">Wool Blend Trousers</h3>
+                            <p class="text-gray-600 text-sm mb-2">Tailored fit</p>
+                            <p class="font-bold">R2 149.99</p>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden" data-aos="fade-up"
+                        data-aos-delay="200">
+                        <div class="relative overflow-hidden h-80">
+                            <img src="https://almadalabel.com/cdn/shop/files/FLOY_SWEATER_CREAM_1220_-_original_1540063.jpg?v=1750745425&width=1500"
+                                alt="Cashmere Sweater" class="w-full h-full object-cover product-image">
+                            <div
+                                class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+                                <button
+                                    class="btn-primary px-6 py-2 rounded-full font-medium opacity-0 hover:opacity-100 transform translate-y-4 hover:translate-y-0 transition-all duration-300">Quick
+                                    View</button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold mb-1">Cashmere Sweater</h3>
+                            <p class="text-gray-600 text-sm mb-2">100% cashmere</p>
+                            <p class="font-bold">R2 999.99</p>
+                        </div>
+                    </div>
+
+                    <!-- Product 4 -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden" data-aos="fade-up"
+                        data-aos-delay="300">
+                        <div class="relative overflow-hidden h-80">
+                            <img src="https://cdn.media.amplience.net/i/mrpricegroup/01_105820138_SI_00?$preset$&w=320"
+                                alt="Denim Jacket" class="w-full h-full object-cover product-image">
+                            <div
+                                class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+                                <button
+                                    class="btn-primary px-6 py-2 rounded-full font-medium opacity-0 hover:opacity-100 transform translate-y-4 hover:translate-y-0 transition-all duration-300">Quick
+                                    View</button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold mb-1">Denim Jacket</h3>
+                            <p class="text-gray-600 text-sm mb-2">Vintage wash</p>
+                            <p class="font-bold">R1 499.99</p>
+                        </div>
+                    </div>
+
+                    <!-- Product 5 -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden" data-aos="fade-up">
+                        <div class="relative overflow-hidden h-80">
+                            <img src="https://i5.walmartimages.com/seo/Frontwalk-Women-Elegant-Lantern-Sleeves-Blouse-Long-Sleeve-Plain-Formal-Tops-Button-Down-Casual-Work-Office-Shirts-White-XXL_5682c4b8-68d5-47e6-91dd-048dd0da7f48.a4bf45226dd2105bb89627ae306aac3c.jpeg"
+                                alt="Silk Blouse" class="w-full h-full object-cover product-image">
+                            <div
+                                class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+                                <button
+                                    class="btn-primary px-6 py-2 rounded-full font-medium opacity-0 hover:opacity-100 transform translate-y-4 hover:translate-y-0 transition-all duration-300">Quick
+                                    View</button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold mb-1">Silk Blouse</h3>
+                            <p class="text-gray-600 text-sm mb-2">Luxury silk</p>
+                            <p class="font-bold">R799.99</p>
+                        </div>
+                    </div>
+
+                    <!-- Product 6 -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden" data-aos="fade-up"
+                        data-aos-delay="100">
+                        <div class="relative overflow-hidden h-80">
+                            <img src="https://www.edgars.co.za/cdn/shop/files/EDG141120240642.jpg?v=1731668037&width=1080"
+                                alt="Linen Pants" class="w-full h-full object-cover product-image">
+                            <div
+                                class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+                                <button
+                                    class="btn-primary px-6 py-2 rounded-full font-medium opacity-0 hover:opacity-100 transform translate-y-4 hover:translate-y-0 transition-all duration-300">Quick
+                                    View</button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold mb-1">Linen Pants</h3>
+                            <p class="text-gray-600 text-sm mb-2">Breathable fabric</p>
+                            <p class="font-bold">R1 299.99</p>
+                        </div>
+                    </div>
+
+                    <!-- Product 7 -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden" data-aos="fade-up"
+                        data-aos-delay="200">
+                        <div class="relative overflow-hidden h-80">
+                            <img src="https://9f8e62d4.delivery.rocketcdn.me/wp-content/uploads/2023/09/A-Word-on-Style-and-Waterproofing.jpg"
+                                alt="Trench Coat" class="w-full h-full object-cover product-image">
+                            <div
+                                class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+                                <button
+                                    class="btn-primary px-6 py-2 rounded-full font-medium opacity-0 hover:opacity-100 transform translate-y-4 hover:translate-y-0 transition-all duration-300">Quick
+                                    View</button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold mb-1">Trench Coat</h3>
+                            <p class="text-gray-600 text-sm mb-2">Water-resistant</p>
+                            <p class="font-bold">R2 999.99</p>
+                        </div>
+                    </div>
+
+                    <!-- Product 8 -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden" data-aos="fade-up"
+                        data-aos-delay="300">
+                        <div class="relative overflow-hidden h-80">
+                            <img src="https://leknit.com/images/produktbilleder/Siri-cardigan-3-le-knit-lene-holme-samsoee-samsøe-strikkeopskrift-p.jpg"
+                                alt="Knit Cardigan" class="w-full h-full object-cover product-image">
+                            <div
+                                class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+                                <button
+                                    class="btn-primary px-6 py-2 rounded-full font-medium opacity-0 hover:opacity-100 transform translate-y-4 hover:translate-y-0 transition-all duration-300">Quick
+                                    View</button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold mb-1">Knit Cardigan</h3>
+                            <p class="text-gray-600 text-sm mb-2">Soft merino wool</p>
+                            <p class="font-bold">R3 499.99</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="mt-16 flex justify-center">
+                    <nav class="flex items-center space-x-2">
+                        <button class="px-3 py-1 rounded border">Previous</button>
+                        <button class="px-3 py-1 rounded border bg-black text-white">1</button>
+                        <button class="px-3 py-1 rounded border">Next</button>
+                    </nav>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter -->
+        <section class="py-20 bg-black text-white">
+            <div class="container mx-auto px-6 text-center">
+                <div class="max-w-2xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Stay Connected</h2>
+                    <p class="text-gray-300 mb-8">Subscribe to our newsletter for exclusive offers, styling tips, and
+                        early access to new collections.</p>
+                    <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                        <input type="email" placeholder="Your email address"
+                            class="flex-grow px-4 py-3 rounded-full text-black">
+                        <button type="submit" class="btn-primary px-6 py-3 rounded-full font-medium">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-100 py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">VEYRAL</h3>
+                    <p class="text-gray-600 mb-4">Premium clothing designed for everyday elegance and lasting quality.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.instagram.com"><i data-feather="instagram"></i></a>
+                        <a href="https://www.twitter.com"><i data-feather="twitter"></i></a>
+                        <a href="https://www.facebook.com"><i data-feather="facebook"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Shop</h3>
+                    <ul class="space-y-2">
+                        <li><a href="shop.html" class="text-gray-600 hover:underline">New Arrivals</a></li>
+                        <li><a href="shop.html" class="text-gray-600 hover:underline">Bestsellers</a></li>
+                        <li><a href="collections.html" class="text-gray-600 hover:underline">Collections</a></li>
+                        <li><a href="shop.html" class="text-gray-600 hover:underline">Gift Cards</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Information</h3>
+                    <ul class="space-y-2">
+                        <li><a href="about.html" class="text-gray-600 hover:underline">About Us</a></li>
+                        <li><a href="about.html" class="text-gray-600 hover:underline">Sustainability</a></li>
+                        <li><a href="about.html" class="text-gray-600 hover:underline">Shipping & Returns</a></li>
+                        <li><a href="about.html" class="text-gray-600 hover:underline">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Contact</h3>
+                    <address class="not-italic text-gray-600 space-y-2">
+                        <p>123 Fashion Avenue</p>
+                        <p>Johannesburg, Gauteng 10001</p>
+                        <p>info@veyral.com</p>
+                        <p>+27 11 123 4567</p>
+                    </address>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-200 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 mb-4 md:mb-0">© 2025 VEYRAL. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="privacy_policy.html" class="text-gray-500 hover:underline">Privacy Policy</a>
+                    <a href="terms&conditions.html" class="text-gray-500 hover:underline">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

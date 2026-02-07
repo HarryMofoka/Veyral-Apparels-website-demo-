@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Journal | VEYRAL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap');
+
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #f5f5f5;
+            --accent: #d4a373;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary);
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #c08a5a;
+            transform: translateY(-2px);
+        }
+
+        .article-card {
+            transition: all 0.3s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .article-image {
+            transition: transform 0.5s ease;
+        }
+
+        .article-card:hover .article-image {
+            transform: scale(1.05);
+        }
+
+        .category-filter {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .category-filter.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .category-filter:hover {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .featured-article {
+            background: linear-gradient(135deg, rgba(212, 163, 115, 0.1) 0%, rgba(26, 26, 26, 0.05) 100%);
+        }
+
+        .newsletter-section {
+            background: linear-gradient(135deg, var(--primary) 0%, #2d2d2d 100%);
+        }
+
+        .search-input {
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.1);
+        }
+
+        .read-time {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .article-excerpt {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .author-badge {
+            background: rgba(212, 163, 115, 0.1);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .loading {
+            display: none;
+        }
+
+        .loading.show {
+            display: flex;
+        }
+    </style>
+</head>
+
+<body class="bg-white">
+    <header class="fixed w-full z-50 bg-white bg-opacity-90 backdrop-blur-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold">VEYRAL</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="shop.html" class="nav-link">Shop</a>
+                <a href="collections.html" class="nav-link">Collections</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="journal.html" class="nav-link font-medium">Journal</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="#"><i data-feather="search"></i></a>
+                <a href="cart.html"><i data-feather="shopping-bag"></i></a>
+                <button class="md:hidden" id="menu-toggle">
+                    <i data-feather="menu"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white w-full px-6 py-4 border-t">
+            <div class="flex flex-col space-y-4">
+                <a href="shop.html" class="nav-link">Shop</a>
+                <a href="collections.html" class="nav-link">Collections</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="journal.html" class="nav-link font-medium">Journal</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-24">
+        <!-- Journal Header -->
+        <section class="py-16 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto text-center" data-aos="fade-up">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6">The Journal</h1>
+                    <p class="text-xl text-gray-600 mb-8">Stories, insights, and inspiration from the world of
+                        sustainable fashion and timeless style.</p>
+
+                    <!-- Search Bar -->
+                    <div class="max-w-lg mx-auto mb-8">
+                        <div class="relative">
+                            <input type="text" id="search-input" placeholder="Search articles..."
+                                class="search-input w-full px-6 py-3 pr-12 border-2 rounded-full focus:outline-none">
+                            <button onclick="searchArticles()"
+                                class="absolute right-4 top-1/2 transform -translate-y-1/2">
+                                <i data-feather="search" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Filters -->
+        <section class="py-8 border-b">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button onclick="filterByCategory('all')"
+                        class="category-filter active px-6 py-2 rounded-full border">All</button>
+                    <button onclick="filterByCategory('sustainability')"
+                        class="category-filter px-6 py-2 rounded-full border">Sustainability</button>
+                    <button onclick="filterByCategory('style')"
+                        class="category-filter px-6 py-2 rounded-full border">Style Guide</button>
+                    <button onclick="filterByCategory('craftsmanship')"
+                        class="category-filter px-6 py-2 rounded-full border">Craftsmanship</button>
+                    <button onclick="filterByCategory('trends')"
+                        class="category-filter px-6 py-2 rounded-full border">Trends</button>
+                    <button onclick="filterByCategory('behind-scenes')"
+                        class="category-filter px-6 py-2 rounded-full border">Behind the Scenes</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Article -->
+        <section class="py-16 featured-article">
+            <div class="container mx-auto px-6">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex flex-col lg:flex-row items-center gap-12" data-aos="fade-up">
+                        <div class="lg:w-1/2">
+                            <div class="rounded-lg overflow-hidden">
+                                <img src="http://static.photos/fashion/1200x630/20" alt="Featured Article"
+                                    class="w-full h-80 object-cover article-image">
+                            </div>
+                        </div>
+                        <div class="lg:w-1/2">
+                            <span class="author-badge">Featured</span>
+                            <h2 class="text-3xl md:text-4xl font-bold mt-4 mb-4">The Future of Sustainable Fashion: A
+                                New Era Begins</h2>
+                            <p class="text-gray-600 mb-6">Exploring how innovative materials, ethical production, and
+                                conscious consumerism are reshaping the fashion industry for generations to come.</p>
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="flex items-center space-x-4">
+                                    <span class="text-sm text-gray-500">By Sarah Mitchell</span>
+                                    <span class="text-sm text-gray-400">•</span>
+                                    <span class="text-sm text-gray-500">September 21, 2024</span>
+                                </div>
+                                <span class="read-time text-sm">8 min read</span>
+                            </div>
+                            <button onclick="readArticle('featured-sustainable-fashion')"
+                                class="btn-primary px-8 py-3 rounded-full font-medium">Read Article</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading Indicator -->
+        <div id="loading" class="loading justify-center items-center py-12">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+        </div>
+
+        <!-- Articles Grid -->
+        <section class="py-20">
+            <div class="container mx-auto px-6">
+                <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Articles will be loaded here by JavaScript -->
+                </div>
+
+                <!-- Load More Button -->
+                <div class="text-center mt-12">
+                    <button onclick="loadMoreArticles()" id="load-more-btn"
+                        class="btn-primary px-8 py-3 rounded-full font-medium">Load More Articles</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section class="py-20 newsletter-section text-white">
+            <div class="container mx-auto px-6">
+                <div class="max-w-3xl mx-auto text-center" data-aos="fade-up">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Never Miss a Story</h2>
+                    <p class="text-gray-300 mb-8">Subscribe to our journal newsletter and get the latest articles, style
+                        tips, and behind-the-scenes content delivered directly to your inbox.</p>
+
+                    <form class="max-w-md mx-auto" onsubmit="subscribeToJournal(event)">
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <input type="email" id="journal-email" placeholder="Your email address"
+                                class="flex-grow px-6 py-3 rounded-full text-black focus:outline-none focus:ring-2 focus:ring-accent"
+                                required>
+                            <button type="submit"
+                                class="btn-primary px-8 py-3 rounded-full font-medium">Subscribe</button>
+                        </div>
+                    </form>
+
+                    <p class="text-sm text-gray-400 mt-4">Join over 10,000 readers who stay informed about sustainable
+                        fashion.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-100 py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">VEYRAL</h3>
+                    <p class="text-gray-600 mb-4">Premium clothing designed for everyday elegance and lasting quality.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.instagram.com"><i data-feather="instagram"></i></a>
+                        <a href="https://www.twitter.com"><i data-feather="twitter"></i></a>
+                        <a href="https://www.facebook.com"><i data-feather="facebook"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Shop</h3>
+                    <ul class="space-y-2">
+                        <li><a href="shop.html" class="text-gray-600 hover:underline">New Arrivals</a></li>
+                        <li><a href="shop.html" class="text-gray-600 hover:underline">Bestsellers</a></li>
+                        <li><a href="collections.html" class="text-gray-600 hover:underline">Collections</a></li>
+                        <li><a href="shop.html" class="text-gray-600 hover:underline">Gift Cards</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Information</h3>
+                    <ul class="space-y-2">
+                        <li><a href="about.html" class="text-gray-600 hover:underline">About Us</a></li>
+                        <li><a href="about.html" class="text-gray-600 hover:underline">Sustainability</a></li>
+                        <li><a href="about.html" class="text-gray-600 hover:underline">Shipping & Returns</a></li>
+                        <li><a href="about.html" class="text-gray-600 hover:underline">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Contact</h3>
+                    <address class="not-italic text-gray-600 space-y-2">
+                        <p>123 Fashion Avenue</p>
+                        <p>Johannesburg, Gauteng 10001</p>
+                        <p>info@veyral.com</p>
+                        <p>+27 11 123 4567</p>
+                    </address>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-200 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 mb-4 md:mb-0">© 2025 VEYRAL. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="privacy_policy.html" class="text-gray-500 hover:underline">Privacy Policy</a>
+                    <a href="terms&conditions.html" class="text-gray-500 hover:underline">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Articles data
+        const articles = [
+            {
+                id: 1,
+                title: "Building a Timeless Wardrobe: Essential Pieces",
+                excerpt: "Discover the key items every wardrobe needs for lasting style and versatility across all seasons.",
+                category: "style",
+                author: "Emma Rodriguez",
+                date: "September 18, 2024",
+                readTime: "6 min read",
+                image: "http://static.photos/fashion/1024x576/21",
+                featured: false
+            },
+            {
+                id: 2,
+                title: "Artisan Spotlight: The Skilled Hands Behind Our Blazers",
+                excerpt: "Meet the master tailors who bring decades of experience to every piece we create.",
+                category: "craftsmanship",
+                author: "David Chen",
+                date: "September 15, 2024",
+                readTime: "4 min read",
+                image: "http://static.photos/fashion/1024x576/22",
+                featured: false
+            },
+            {
+                id: 3,
+                title: "Sustainable Materials: The Fabric of Change",
+                excerpt: "How innovative eco-friendly fabrics are revolutionizing fashion production.",
+                category: "sustainability",
+                author: "Sarah Mitchell",
+                date: "September 12, 2024",
+                readTime: "7 min read",
+                image: "http://static.photos/fashion/1024x576/23",
+                featured: false
+            },
+            {
+                id: 4,
+                title: "Fall 2024 Color Trends: Earth Tones Take Center Stage",
+                excerpt: "Explore the rich, natural palette that's dominating this season's fashion landscape.",
+                category: "trends",
+                author: "Lisa Park",
+                date: "September 10, 2024",
+                readTime: "5 min read",
+                image: "http://static.photos/fashion/1024x576/24",
+                featured: false
+            },
+            {
+                id: 5,
+                title: "From Sketch to Storefront: Our Design Process",
+                excerpt: "Take a behind-the-scenes look at how our collections come to life.",
+                category: "behind-scenes",
+                author: "Michael Torres",
+                date: "September 8, 2024",
+                readTime: "8 min read",
+                image: "http://static.photos/fashion/1024x576/25",
+                featured: false
+            },
+            {
+                id: 6,
+                title: "The Art of Layering: Mastering Transitional Dressing",
+                excerpt: "Learn professional techniques for creating sophisticated layered looks.",
+                category: "style",
+                author: "Emma Rodriguez",
+                date: "September 5, 2024",
+                readTime: "6 min read",
+                image: "http://static.photos/fashion/1024x576/26",
+                featured: false
+            },
+            {
+                id: 7,
+                title: "Ethical Manufacturing: Our Partnership Promise",
+                excerpt: "Transparency in our supply chain and commitment to fair labor practices.",
+                category: "sustainability",
+                author: "Sarah Mitchell",
+                date: "September 3, 2024",
+                readTime: "9 min read",
+                image: "http://static.photos/fashion/1024x576/27",
+                featured: false
+            },
+            {
+                id: 8,
+                title: "Heritage Techniques: Preserving Traditional Craftsmanship",
+                excerpt: "How we honor time-tested methods while embracing modern innovation.",
+                category: "craftsmanship",
+                author: "David Chen",
+                date: "September 1, 2024",
+                readTime: "7 min read",
+                image: "http://static.photos/fashion/1024x576/28",
+                featured: false
+            },
+            {
+                id: 9,
+                title: "Capsule Wardrobe Challenge: 30 Pieces, Endless Possibilities",
+                excerpt: "Transform your closet with our minimalist approach to maximum style.",
+                category: "style",
+                author: "Lisa Park",
+                date: "August 29, 2024",
+                readTime: "5 min read",
+                image: "http://static.photos/fashion/1024x576/29",
+                featured: false
+            }
+        ];
+
+        let currentCategory = 'all';
+        let displayedArticles = 6;
+        let filteredArticles = articles;
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function () {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+
+            feather.replace();
+            loadArticles();
+            setupEventListeners();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            menuToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                const icon = menuToggle.querySelector('svg');
+                if (mobileMenu.classList.contains('hidden')) {
+                    feather.replace();
+                } else {
+                    icon.setAttribute('data-feather', 'x');
+                    feather.replace();
+                }
+            });
+
+            // Search functionality
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    searchArticles();
+                }
+            });
+        }
+
+        // Load articles
+        function loadArticles() {
+            const articlesGrid = document.getElementById('articles-grid');
+            const loadMoreBtn = document.getElementById('load-more-btn');
+
+            // Clear existing articles
+            articlesGrid.innerHTML = '';
+
+            // Get articles to display
+            const articlesToShow = filteredArticles.slice(0, displayedArticles);
+
+            articlesToShow.forEach((article, index) => {
+                const articleCard = createArticleCard(article, index);
+                articlesGrid.appendChild(articleCard);
+            });
+
+            // Show/hide load more button
+            if (displayedArticles >= filteredArticles.length) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'inline-block';
+            }
+
+            // Replace feather icons
+            feather.replace();
+
+            // Reinitialize AOS for new elements
+            AOS.refresh();
+        }
+
+        // Create article card
+        function createArticleCard(article, index) {
+            const articleDiv = document.createElement('div');
+            articleDiv.className = 'article-card bg-white rounded-lg overflow-hidden shadow-sm fade-in';
+            articleDiv.setAttribute('data-aos', 'fade-up');
+            articleDiv.setAttribute('data-aos-delay', (index % 3) * 100);
+
+            articleDiv.innerHTML = `
+                <div class="h-64 overflow-hidden">
+                    <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover article-image">
+                </div>
+                <div class="p-6">
+                    <span class="author-badge">${article.category.replace('-', ' ')}</span>
+                    <h2 class="text-xl font-bold mt-3 mb-3">${article.title}</h2>
+                    <p class="text-gray-600 mb-4 article-excerpt">${article.excerpt}</p>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-500">By ${article.author}</span>
+                            <span class="text-sm text-gray-400">•</span>
+                            <span class="text-sm text-gray-500">${article.date}</span>
+                        </div>
+                        <span class="read-time text-sm">${article.readTime}</span>
+                    </div>
+                    <button onclick="readArticle('${article.id}')" class="text-sm font-medium underline hover:no-underline">Read More</button>
+                </div>
+            `;
+
+            return articleDiv;
+        }
+
+        // Filter by category
+        function filterByCategory(category) {
+            // Update active filter button
+            const filterBtns = document.querySelectorAll('.category-filter');
+            filterBtns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Show loading
+            showLoading();
+
+            // Filter articles
+            currentCategory = category;
+            if (category === 'all') {
+                filteredArticles = articles;
+            } else {
+                filteredArticles = articles.filter(article => article.category === category);
+            }
+
+            // Reset display count
+            displayedArticles = 6;
+
+            // Load filtered articles with delay for better UX
+            setTimeout(() => {
+                hideLoading();
+                loadArticles();
+            }, 500);
+        }
+
+        // Search articles
+        function searchArticles() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase().trim();
+
+            if (!searchTerm) {
+                filterByCategory('all');
+                return;
+            }
+
+            // Show loading
+            showLoading();
+
+            // Filter articles by search term
+            filteredArticles = articles.filter(article =>
+                article.title.toLowerCase().includes(searchTerm) ||
+                article.excerpt.toLowerCase().includes(searchTerm) ||
+                article.author.toLowerCase().includes(searchTerm) ||
+                article.category.toLowerCase().includes(searchTerm)
+            );
+
+            // Reset display count
+            displayedArticles = 6;
+
+            // Update active filter (remove active from all buttons)
+            const filterBtns = document.querySelectorAll('.category-filter');
+            filterBtns.forEach(btn => btn.classList.remove('active'));
+
+            // Load search results
+            setTimeout(() => {
+                hideLoading();
+                loadArticles();
+
+                // Show search results message
+                if (filteredArticles.length === 0) {
+                    showNoResultsMessage(searchTerm);
+                } else {
+                    showSearchResultsMessage(filteredArticles.length, searchTerm);
+                }
+            }, 500);
+        }
+
+        // Load more articles
+        function loadMoreArticles() {
+            displayedArticles += 6;
+            loadArticles();
+        }
+
+        // Read article (placeholder functionality)
+        function readArticle(articleId) {
+            // In a real application, this would navigate to the full article page
+            showNotification(`Opening article: ${articleId}`);
+
+            // Simulate article loading
+            setTimeout(() => {
+                alert('In a real application, this would open the full article page.\n\nThis is a demonstration of the journal functionality.');
+            }, 500);
+        }
+
+        // Subscribe to journal newsletter
+        function subscribeToJournal(event) {
+            event.preventDefault();
+            const email = document.getElementById('journal-email').value;
+
+            // Show loading state
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Subscribing...';
+            submitBtn.disabled = true;
+
+            // Simulate API call
+            setTimeout(() => {
+                showNotification(`Thank you for subscribing to The Journal! Welcome aboard, ${email.split('@')[0]}!`);
+                document.getElementById('journal-email').value = '';
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }, 1500);
+        }
+
+        // Show loading indicator
+        function showLoading() {
+            document.getElementById('loading').classList.add('show');
+        }
+
+        // Hide loading indicator
+        function hideLoading() {
+            document.getElementById('loading').classList.remove('show');
+        }
+
+        // Show no results message
+        function showNoResultsMessage(searchTerm) {
+            const articlesGrid = document.getElementById('articles-grid');
+            articlesGrid.innerHTML = `
+                <div class="col-span-full text-center py-16">
+                    <i data-feather="search" class="w-16 h-16 mx-auto mb-4 text-gray-300"></i>
+                    <h3 class="text-2xl font-bold mb-4">No articles found</h3>
+                    <p class="text-gray-600 mb-6">We couldn't find any articles matching "${searchTerm}"</p>
+                    <button onclick="clearSearch()" class="btn-primary px-6 py-3 rounded-full">Clear Search</button>
+                </div>
+            `;
+            feather.replace();
+        }
+
+        // Show search results message
+        function showSearchResultsMessage(count, searchTerm) {
+            showNotification(`Found ${count} article${count === 1 ? '' : 's'} for "${searchTerm}"`);
+        }
+
+        // Clear search
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            filterByCategory('all');
+
+            // Reset active filter button
+            const filterBtns = document.querySelectorAll('.category-filter');
+            filterBtns.forEach(btn => btn.classList.remove('active'));
+            filterBtns[0].classList.add('active'); // Activate "All" button
+        }
+
+        // Show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-24 right-6 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 fade-in';
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 4000);
+        }
+
+        // Smooth scrolling for article links
+        function scrollToArticles() {
+            document.getElementById('articles-grid').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Handle keyboard shortcuts
+        document.addEventListener('keydown', function (e) {
+            // Escape key to clear search or close mobile menu
+            if (e.key === 'Escape') {
+                const searchInput = document.getElementById('search-input');
+                const mobileMenu = document.getElementById('mobile-menu');
+
+                if (searchInput.value) {
+                    clearSearch();
+                } else if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            }
+
+            // Ctrl/Cmd + K to focus search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                document.getElementById('search-input').focus();
+            }
+        });
+    </script>
+</body>
+
+</html>

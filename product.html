@@ -1,0 +1,477 @@
+<!--Product html-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signature Blazer | VEYRAL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap');
+
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #f5f5f5;
+            --accent: #d4a373;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary);
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #c08a5a;
+            transform: translateY(-2px);
+        }
+
+        .size-btn {
+            transition: all 0.2s ease;
+        }
+
+        .size-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .product-thumbnail {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-thumbnail:hover,
+        .product-thumbnail.active {
+            border-color: var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .product-image {
+            transition: transform 0.5s ease;
+        }
+
+        .product-image:hover {
+            transform: scale(1.03);
+        }
+    </style>
+</head>
+
+<body class="bg-white">
+    <header class="fixed w-full z-50 bg-white bg-opacity-90 backdrop-blur-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold">VEYRAL</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="shop.html" class="nav-link">Shop</a>
+                <a href="collections.html" class="nav-link">Collections</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="journal.html" class="nav-link">Journal</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="#"><i data-feather="search"></i></a>
+                <a href="cart.html"><i data-feather="shopping-bag"></i></a>
+                <button class="md:hidden" id="menu-toggle">
+                    <i data-feather="menu"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white w-full px-6 py-4 border-t">
+            <div class="flex flex-col space-y-4">
+                <a href="shop.html" class="nav-link">Shop</a>
+                <a href="collections.html" class="nav-link">Collections</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="journal.html" class="nav-link">Journal</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-24">
+        <!-- Product Section -->
+        <section class="py-12">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col lg:flex-row">
+                    <!-- Product Images -->
+                    <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-10">
+                        <div class="mb-4 rounded-lg overflow-hidden">
+                            <img id="main-image"
+                                src="https://thefoschini.vtexassets.com/arquivos/ids/220247008-800-1067/4b2d72a1-c525-46d8-beea-12972c56e764.png?v=638925765378970000"
+                                alt="Signature Blazer" class="w-full product-image">
+                        </div>
+                        <div class="grid grid-cols-4 gap-3">
+                            <div class="product-thumbnail border rounded-lg overflow-hidden active"
+                                onclick="changeImage('http://static.photos/fashion/1200x630/4')">
+                                <img src="http://static.photos/fashion/200x200/4" alt="Signature Blazer" class="w-full">
+                            </div>
+                            <div class="product-thumbnail border rounded-lg overflow-hidden"
+                                onclick="changeImage('http://static.photos/fashion/1200x630/41')">
+                                <img src="http://static.photos/fashion/200x200/41" alt="Signature Blazer Detail"
+                                    class="w-full">
+                            </div>
+                            <div class="product-thumbnail border rounded-lg overflow-hidden"
+                                onclick="changeImage('http://static.photos/fashion/1200x630/42')">
+                                <img src="http://static.photos/fashion/200x200/42" alt="Signature Blazer Back"
+                                    class="w-full">
+                            </div>
+                            <div class="product-thumbnail border rounded-lg overflow-hidden"
+                                onclick="changeImage('http://static.photos/fashion/1200x630/43')">
+                                <img src="http://static.photos/fashion/200x200/43" alt="Signature Blazer Fabric"
+                                    class="w-full">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Details -->
+                    <div class="lg:w-1/2">
+                        <div class="mb-6">
+                            <span class="text-gray-500">Premium Classics</span>
+                            <h1 class="text-3xl md:text-4xl font-bold mt-2 mb-4">Signature Blazer</h1>
+                            <p class="text-2xl font-bold">$249</p>
+                        </div>
+
+                        <div class="mb-8">
+                            <p class="text-gray-600 mb-6">Our best-selling blazer, crafted from premium wool and
+                                designed for both comfort and style. Perfect for both office wear and evening occasions.
+                            </p>
+
+                            <div class="mb-6">
+                                <h3 class="font-bold mb-3">Color</h3>
+                                <div class="flex space-x-3">
+                                    <button class="w-8 h-8 rounded-full bg-gray-800 border-2 border-gray-800"></button>
+                                    <button class="w-8 h-8 rounded-full bg-gray-400 border-2 border-gray-300"></button>
+                                    <button class="w-8 h-8 rounded-full bg-blue-900 border-2 border-gray-300"></button>
+                                </div>
+                            </div>
+
+                            <div class="mb-8">
+                                <div class="flex justify-between items-center mb-3">
+                                    <h3 class="font-bold">Size</h3>
+                                    <a href="#" class="text-sm underline">Size Guide</a>
+                                </div>
+                                <div class="grid grid-cols-4 gap-3">
+                                    <button class="size-btn border rounded-full py-2 text-center">XS</button>
+                                    <button class="size-btn border rounded-full py-2 text-center">S</button>
+                                    <button class="size-btn border rounded-full py-2 text-center active">M</button>
+                                    <button class="size-btn border rounded-full py-2 text-center">L</button>
+                                    <button class="size-btn border rounded-full py-2 text-center">XL</button>
+                                    <button class="size-btn border rounded-full py-2 text-center">XXL</button>
+                                </div>
+                            </div>
+
+                            <div class="flex space-x-4 mb-8">
+                                <div class="border rounded-full flex items-center">
+                                    <button class="px-4 py-2 text-xl">-</button>
+                                    <span class="px-4">1</span>
+                                    <button class="px-4 py-2 text-xl">+</button>
+                                </div>
+                                <button class="btn-primary flex-grow px-6 py-3 rounded-full font-medium">Add to
+                                    Cart</button>
+                            </div>
+
+                            <div class="border-t border-b py-6 mb-6">
+                                <div class="flex items-center justify-between mb-4 cursor-pointer"
+                                    onclick="toggleTab('details')">
+                                    <h3 class="font-bold">Product Details</h3>
+                                    <i data-feather="chevron-down" class="tab-icon" data-tab="details"></i>
+                                </div>
+                                <div id="details" class="tab-content active">
+                                    <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                                        <li>Premium wool blend fabric</li>
+                                        <li>Notch lapel with working buttonhole</li>
+                                        <li>Two-button front with flap pockets</li>
+                                        <li>Fully lined with interior pocket</li>
+                                        <li>Regular fit</li>
+                                        <li>Dry clean only</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="border-b py-6 mb-6">
+                                <div class="flex items-center justify-between mb-4 cursor-pointer"
+                                    onclick="toggleTab('shipping')">
+                                    <h3 class="font-bold">Shipping & Returns</h3>
+                                    <i data-feather="chevron-down" class="tab-icon" data-tab="shipping"></i>
+                                </div>
+                                <div id="shipping" class="tab-content">
+                                    <p class="text-gray-600 mb-3">Free standard shipping on all orders. Express shipping
+                                        available at checkout.</p>
+                                    <p class="text-gray-600">Easy returns within 30 days of purchase. Items must be
+                                        unworn with tags attached.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-4">
+                                <a href="#" class="flex items-center space-x-2">
+                                    <i data-feather="heart"></i>
+                                    <span>Save for later</span>
+                                </a>
+                                <a href="#" class="flex items-center space-x-2">
+                                    <i data-feather="share-2"></i>
+                                    <span>Share</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- You May Also Like -->
+        <section class="py-16 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold mb-10 text-center">You May Also Like</h2>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                    <!-- Product 1 -->
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm">
+                        <div class="h-64 overflow-hidden">
+                            <img src="http://static.photos/fashion/640x360/9" alt="Wool Trousers"
+                                class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold mb-1">Wool Trousers</h3>
+                            <p class="text-gray-600 text-sm mb-2">Tailored fit</p>
+                            <p class="font-bold">$129</p>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm">
+                        <div class="h-64 overflow-hidden">
+                            <img src="http://static.photos/fashion/640x360/10" alt="Silk Shirt"
+                                class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold mb-1">Silk Shirt</h3>
+                            <p class="text-gray-600 text-sm mb-2">Luxury silk</p>
+                            <p class="font-bold">$159</p>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm">
+                        <div class="h-64 overflow-hidden">
+                            <img src="http://static.photos/fashion/640x360/11" alt="Cashmere Sweater"
+                                class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold mb-1">Cashmere Sweater</h3>
+                            <p class="text-gray-600 text-sm mb-2">100% cashmere</p>
+                            <p class="font-bold">$199</p>
+                        </div>
+                    </div>
+
+                    <!-- Product 4 -->
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm">
+                        <div class="h-64 overflow-hidden">
+                            <img src="http://static.photos/fashion/640x360/12" alt="Leather Belt"
+                                class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold mb-1">Leather Belt</h3>
+                            <p class="text-gray-600 text-sm mb-2">Genuine leather</p>
+                            <p class="font-bold">$89</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-100 py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">VEYRAL</h3>
+                    <p class="text-gray-600 mb-4">Premium clothing designed for everyday elegance and lasting quality.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.instagram.com"><i data-feather="instagram"></i></a>
+                        <a href="https://www.twitter.com"><i data-feather="twitter"></i></a>
+                        <a href="https://www.facebook.com"><i data-feather="facebook"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Shop</h3>
+                    <ul class="space-y-2">
+                        <li><a href="shop.html" class="text-gray-600 hover:underline">New Arrivals</a></li>
+                        <li><a href="shop.html" class="text-gray-600 hover:underline">Bestsellers</a></li>
+                        <li><a href="collections.html" class="text-gray-600 hover:underline">Collections</a></li>
+                        <li><a href="shop.html" class="text-gray-600 hover:underline">Gift Cards</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Information</h3>
+                    <ul class="space-y-2">
+                        <li><a href="about.html" class="text-gray-600 hover:underline">About Us</a></li>
+                        <li><a href="about.html" class="text-gray-600 hover:underline">Sustainability</a></li>
+                        <li><a href="about.html" class="text-gray-600 hover:underline">Shipping & Returns</a></li>
+                        <li><a href="about.html" class="text-gray-600 hover:underline">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Contact</h3>
+                    <address class="not-italic text-gray-600 space-y-2">
+                        <p>123 Fashion Avenue</p>
+                        <p>Johannesburg, Gauteng 10001</p>
+                        <p>info@veyral.com</p>
+                        <p>+27 11 123 4567</p>
+                    </address>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-200 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 mb-4 md:mb-0">© 2025 VEYRAL. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="privacy_policy.html" class="text-gray-500 hover:underline">Privacy Policy</a>
+                    <a href="terms&conditions.html" class="text-gray-500 hover:underline">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize AOS animations
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const icon = menuToggle.querySelector('svg');
+            if (mobileMenu.classList.contains('hidden')) {
+                feather.replace();
+            } else {
+                icon.setAttribute('data-feather', 'x');
+                feather.replace();
+            }
+        });
+
+        // Feather icons replacement
+        feather.replace();
+
+        // Change product image
+        function changeImage(src) {
+            document.getElementById('main-image').src = src;
+
+            // Update active thumbnail
+            const thumbnails = document.querySelectorAll('.product-thumbnail');
+            thumbnails.forEach(thumb => {
+                thumb.classList.remove('active');
+                if (thumb.querySelector('img').src.includes(src.split('/').pop())) {
+                    thumb.classList.add('active');
+                }
+            });
+        }
+
+        // Size selection
+        const sizeBtns = document.querySelectorAll('.size-btn');
+        sizeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                sizeBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // Toggle tabs
+        function toggleTab(tabId) {
+            const tab = document.getElementById(tabId);
+            const icon = document.querySelector(`.tab-icon[data-tab="${tabId}"]`);
+
+            // Toggle content
+            tab.classList.toggle('active');
+
+            // Toggle icon
+            if (tab.classList.contains('active')) {
+                icon.setAttribute('data-feather', 'chevron-down');
+            } else {
+                icon.setAttribute('data-feather', 'chevron-up');
+            }
+            feather.replace();
+        }
+
+        // Quantity buttons
+        const minusBtn = document.querySelector('.border.rounded-full button:nth-child(1)');
+        const plusBtn = document.querySelector('.border.rounded-full button:nth-child(3)');
+        const quantitySpan = document.querySelector('.border.rounded-full span');
+
+        minusBtn.addEventListener('click', () => {
+            let quantity = parseInt(quantitySpan.textContent);
+            if (quantity > 1) {
+                quantitySpan.textContent = quantity - 1;
+            }
+        });
+
+        plusBtn.addEventListener('click', () => {
+            let quantity = parseInt(quantitySpan.textContent);
+            quantitySpan.textContent = quantity + 1;
+        });
+    </script>
+</body>
+
+</html>
