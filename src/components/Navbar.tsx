@@ -1,97 +1,135 @@
 "use client";
 
-import Link from "next/link";
 import { useState, useEffect } from "react";
-import { ShoppingBag, Search, Menu, X } from "lucide-react";
-import { getCart, getCartItemCount } from "@/utils/cart";
+import Link from "next/link";
+import { Search, User, ShoppingBag, Menu, X } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 export default function Navbar() {
-    const [isOpen, setIsOpen] = useState(false);
-    const [cartCount, setCartCount] = useState(0);
+    const { toggleCart, itemCount } = useCart();
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     useEffect(() => {
-        const updateCartCount = () => {
-            const cart = getCart();
-            setCartCount(getCartItemCount(cart));
+        const handleScroll = () => {
+            if (window.scrollY > 50) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
         };
 
-        updateCartCount();
-        window.addEventListener("storage", updateCartCount);
-        window.addEventListener("cartUpdated", updateCartCount);
-
-        return () => {
-            window.removeEventListener("storage", updateCartCount);
-            window.removeEventListener("cartUpdated", updateCartCount);
-        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const navLinks = [
-        { href: "/", label: "Home" },
-        { href: "/shop", label: "Shop" },
-        { href: "/collections", label: "Collections" },
-        { href: "/about", label: "About" },
-        { href: "/journal", label: "Journal" },
-    ];
+    const toggleMenu = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
+        if (!isMobileMenuOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
+    };
 
     return (
-        <header className="fixed w-full z-50 bg-white/90 backdrop-blur-sm border-b border-gray-100">
-            <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
-                <Link href="/" className="text-2xl font-bold font-serif">
-                    VEYRAL
-                </Link>
-
-                {/* Desktop Nav */}
-                <div className="hidden md:flex space-x-8">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.href}
-                            href={link.href}
-                            className="relative text-gray-700 hover:text-black transition-colors after:absolute after:bottom-[-5px] after:left-0 after:w-0 after:h-0.5 after:bg-amber-600 after:transition-all hover:after:w-full"
-                        >
-                            {link.label}
-                        </Link>
-                    ))}
-                </div>
-
-                {/* Icons */}
-                <div className="flex items-center space-x-4">
-                    <button className="p-2 hover:bg-gray-100 rounded-full transition">
-                        <Search className="w-5 h-5" />
-                    </button>
-                    <Link href="/cart" className="p-2 hover:bg-gray-100 rounded-full transition relative">
-                        <ShoppingBag className="w-5 h-5" />
-                        {cartCount > 0 && (
-                            <span className="absolute -top-1 -right-1 bg-amber-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                                {cartCount}
-                            </span>
-                        )}
-                    </Link>
+        <>
+            <nav
+                className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b ${isScrolled
+                        ? "glass-panel border-white/10"
+                        : "bg-transparent border-transparent"
+                    }`}
+            >
+                <div className="max-w-[1920px] mx-auto px-6 h-16 flex items-center justify-between">
+                    {/* Mobile Menu Button */}
                     <button
-                        className="md:hidden p-2 hover:bg-gray-100 rounded-full transition"
-                        onClick={() => setIsOpen(!isOpen)}
+                        onClick={toggleMenu}
+                        className="md:hidden text-neutral-400 hover:text-white transition-colors"
                     >
-                        {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                        <Menu className="w-6 h-6" />
                     </button>
+
+                    {/* Desktop Links */}
+                    <div className="hidden md:flex items-center gap-8 text-xs font-normal text-neutral-500">
+                        <Link href="/shop" className="hover:text-white transition-colors">
+                            Shop
+                        </Link>
+                        <Link href="/#collections" className="hover:text-white transition-colors">
+                            Collections
+                        </Link>
+                        <Link href="/#journal" className="hover:text-white transition-colors">
+                            Editorial
+                        </Link>
+                    </div>
+
+                    {/* Logo */}
+                    <Link
+                        href="/"
+                        className="text-xl font-medium tracking-tight text-white absolute left-1/2 -translate-x-1/2"
+                    >
+                        VEYRAL
+                    </Link>
+
+                    {/* Icons */}
+                    <div className="flex items-center gap-5">
+                        <button className="text-neutral-500 hover:text-white transition-colors">
+                            <Search className="w-5 h-5" />
+                        </button>
+                        <button className="text-neutral-500 hover:text-white transition-colors">
+                            <User className="w-5 h-5" />
+                        </button>
+                        <button
+                            onClick={toggleCart}
+                            className="text-neutral-500 hover:text-white transition-colors relative"
+                        >
+                            <ShoppingBag className="w-5 h-5" />
+                            {itemCount > 0 && (
+                                <span className="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-pulse" />
+                            )}
+                        </button>
+                    </div>
                 </div>
             </nav>
 
-            {/* Mobile Menu */}
-            {isOpen && (
-                <div className="md:hidden bg-white border-t px-6 py-4">
-                    <div className="flex flex-col space-y-4">
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.href}
-                                href={link.href}
-                                className="text-gray-700 hover:text-black transition-colors"
-                                onClick={() => setIsOpen(false)}
-                            >
-                                {link.label}
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            )}
-        </header>
+            {/* Mobile Menu Overlay */}
+            <div
+                className={`fixed inset-0 bg-[#030303] z-40 transition-transform duration-500 flex flex-col items-center justify-center space-y-6 ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+                    }`}
+            >
+                <button
+                    onClick={toggleMenu}
+                    className="absolute top-6 right-6 text-neutral-500 hover:text-white transition-colors"
+                >
+                    <X className="w-8 h-8" />
+                </button>
+                <Link
+                    href="/shop"
+                    onClick={toggleMenu}
+                    className="text-2xl font-light tracking-tight text-white hover:text-neutral-400 transition-colors"
+                >
+                    Shop
+                </Link>
+                <Link
+                    href="/#collections"
+                    onClick={toggleMenu}
+                    className="text-2xl font-light tracking-tight text-white hover:text-neutral-400 transition-colors"
+                >
+                    Collections
+                </Link>
+                <Link
+                    href="/#journal"
+                    onClick={toggleMenu}
+                    className="text-2xl font-light tracking-tight text-white hover:text-neutral-400 transition-colors"
+                >
+                    Journal
+                </Link>
+                <Link
+                    href="#"
+                    className="text-2xl font-light tracking-tight text-white hover:text-neutral-400 transition-colors"
+                >
+                    Manifesto
+                </Link>
+            </div>
+        </>
     );
 }

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getCart, getCartTotal, clearCart, CartItem } from "@/utils/cart";
 import { formatPriceUSD, generateOrderId } from "@/utils/helpers";
+import { CheckCircle, ArrowRight } from "lucide-react";
 
 export default function CheckoutPage() {
     const [cart, setCart] = useState<CartItem[]>([]);
@@ -52,34 +53,41 @@ export default function CheckoutPage() {
 
     if (!isLoaded) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="animate-pulse">Loading...</div>
+            <div className="min-h-screen bg-[#030303] flex items-center justify-center">
+                <div className="text-white animate-pulse text-sm tracking-widest uppercase">
+                    Loading System...
+                </div>
             </div>
         );
     }
 
     if (orderComplete) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="text-center max-w-md mx-auto px-6">
-                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
+            <div className="min-h-screen bg-[#030303] flex items-center justify-center">
+                <div className="text-center max-w-md mx-auto px-6 fade-up">
+                    <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-8 border border-white/20">
+                        <CheckCircle className="w-8 h-8 text-white" />
                     </div>
-                    <h1 className="text-3xl font-serif font-bold mb-4">Order Confirmed!</h1>
-                    <p className="text-gray-600 mb-2">Thank you for your order.</p>
-                    <p className="text-gray-600 mb-6">
-                        Your order number is: <strong>{orderId}</strong>
+                    <h1 className="text-3xl font-medium text-white mb-4 tracking-tight">
+                        Order Confirmed
+                    </h1>
+                    <p className="text-neutral-400 mb-2 text-sm">
+                        Transaction processed successfully.
                     </p>
-                    <p className="text-gray-500 text-sm mb-8">
-                        A confirmation email will be sent to {formData.email}
+                    <div className="bg-white/5 border border-white/10 rounded p-4 my-6">
+                        <p className="text-neutral-500 text-xs uppercase tracking-widest mb-1">
+                            Order ID
+                        </p>
+                        <p className="text-white font-mono text-lg">{orderId}</p>
+                    </div>
+                    <p className="text-neutral-500 text-xs mb-8">
+                        Digital receipt sent to {formData.email}
                     </p>
                     <Link
                         href="/shop"
-                        className="bg-amber-600 hover:bg-amber-700 text-white px-8 py-4 rounded-full font-medium inline-block transition"
+                        className="bg-white text-black px-8 py-3 rounded text-sm font-medium hover:bg-neutral-200 transition-colors inline-block"
                     >
-                        Continue Shopping
+                        Return to Catalog
                     </Link>
                 </div>
             </div>
@@ -88,11 +96,11 @@ export default function CheckoutPage() {
 
     if (cart.length === 0) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
+            <div className="min-h-screen bg-[#030303] flex items-center justify-center">
                 <div className="text-center">
-                    <h1 className="text-2xl font-bold mb-4">Your cart is empty</h1>
-                    <Link href="/shop" className="text-amber-600 hover:underline">
-                        Continue Shopping
+                    <h1 className="text-2xl font-medium text-white mb-4">Cart Empty</h1>
+                    <Link href="/shop" className="text-neutral-400 hover:text-white underline text-sm transition-colors">
+                        Return to Catalog
                     </Link>
                 </div>
             </div>
@@ -100,16 +108,19 @@ export default function CheckoutPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            <section className="py-12">
+        <div className="min-h-screen bg-[#030303] pt-24 pb-12">
+            <section>
                 <div className="container mx-auto px-6">
-                    <h1 className="text-3xl font-serif font-bold mb-8">Checkout</h1>
+                    <h1 className="text-3xl font-medium text-white mb-8 tracking-tight">Checkout</h1>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                         {/* Checkout Form */}
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            <div className="bg-white rounded-lg p-6 shadow-sm">
-                                <h2 className="text-xl font-bold mb-4">Contact Information</h2>
+                        <form onSubmit={handleSubmit} className="space-y-8">
+                            <div className="bg-transparent border border-white/5 rounded p-6">
+                                <h2 className="text-lg font-medium text-white mb-6 flex items-center gap-2">
+                                    <span className="w-6 h-6 rounded-full bg-white text-black text-xs font-bold flex items-center justify-center">1</span>
+                                    Contact Information
+                                </h2>
                                 <input
                                     type="email"
                                     name="email"
@@ -117,12 +128,15 @@ export default function CheckoutPage() {
                                     required
                                     value={formData.email}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600"
+                                    className="w-full px-4 py-3 bg-neutral-900/50 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-white/30 transition-colors placeholder:text-neutral-600"
                                 />
                             </div>
 
-                            <div className="bg-white rounded-lg p-6 shadow-sm">
-                                <h2 className="text-xl font-bold mb-4">Shipping Address</h2>
+                            <div className="bg-transparent border border-white/5 rounded p-6">
+                                <h2 className="text-lg font-medium text-white mb-6 flex items-center gap-2">
+                                    <span className="w-6 h-6 rounded-full bg-white text-black text-xs font-bold flex items-center justify-center">2</span>
+                                    Shipping Details
+                                </h2>
                                 <div className="grid grid-cols-2 gap-4">
                                     <input
                                         type="text"
@@ -131,7 +145,7 @@ export default function CheckoutPage() {
                                         required
                                         value={formData.firstName}
                                         onChange={handleChange}
-                                        className="px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600"
+                                        className="px-4 py-3 bg-neutral-900/50 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-white/30 transition-colors placeholder:text-neutral-600"
                                     />
                                     <input
                                         type="text"
@@ -140,7 +154,7 @@ export default function CheckoutPage() {
                                         required
                                         value={formData.lastName}
                                         onChange={handleChange}
-                                        className="px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600"
+                                        className="px-4 py-3 bg-neutral-900/50 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-white/30 transition-colors placeholder:text-neutral-600"
                                     />
                                 </div>
                                 <input
@@ -150,7 +164,7 @@ export default function CheckoutPage() {
                                     required
                                     value={formData.address}
                                     onChange={handleChange}
-                                    className="w-full mt-4 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600"
+                                    className="w-full mt-4 px-4 py-3 bg-neutral-900/50 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-white/30 transition-colors placeholder:text-neutral-600"
                                 />
                                 <div className="grid grid-cols-3 gap-4 mt-4">
                                     <input
@@ -160,25 +174,25 @@ export default function CheckoutPage() {
                                         required
                                         value={formData.city}
                                         onChange={handleChange}
-                                        className="px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600"
+                                        className="px-4 py-3 bg-neutral-900/50 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-white/30 transition-colors placeholder:text-neutral-600"
                                     />
                                     <input
                                         type="text"
                                         name="province"
-                                        placeholder="Province"
+                                        placeholder="State/Prov"
                                         required
                                         value={formData.province}
                                         onChange={handleChange}
-                                        className="px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600"
+                                        className="px-4 py-3 bg-neutral-900/50 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-white/30 transition-colors placeholder:text-neutral-600"
                                     />
                                     <input
                                         type="text"
                                         name="postalCode"
-                                        placeholder="Postal code"
+                                        placeholder="Zip/Postal"
                                         required
                                         value={formData.postalCode}
                                         onChange={handleChange}
-                                        className="px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600"
+                                        className="px-4 py-3 bg-neutral-900/50 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-white/30 transition-colors placeholder:text-neutral-600"
                                     />
                                 </div>
                                 <input
@@ -188,47 +202,52 @@ export default function CheckoutPage() {
                                     required
                                     value={formData.phone}
                                     onChange={handleChange}
-                                    className="w-full mt-4 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600"
+                                    className="w-full mt-4 px-4 py-3 bg-neutral-900/50 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-white/30 transition-colors placeholder:text-neutral-600"
                                 />
                             </div>
 
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="w-full bg-amber-600 hover:bg-amber-700 disabled:bg-gray-400 text-white py-4 rounded-full font-medium transition"
+                                className="w-full bg-white text-black hover:bg-neutral-200 disabled:bg-neutral-700 disabled:text-neutral-500 py-4 rounded font-bold uppercase tracking-widest text-sm transition-colors flex items-center justify-center gap-2"
                             >
-                                {isSubmitting ? "Processing..." : `Pay ${formatPriceUSD(total)}`}
+                                {isSubmitting ? "Processing..." : `Pay ${formatPriceUSD(total)}`} <ArrowRight className="w-4 h-4" />
                             </button>
                         </form>
 
                         {/* Order Summary */}
-                        <div className="bg-white rounded-lg p-6 shadow-sm h-fit sticky top-24">
-                            <h2 className="text-xl font-bold mb-6">Order Summary</h2>
+                        <div className="bg-neutral-900/30 rounded p-8 border border-white/5 h-fit sticky top-24">
+                            <h2 className="text-lg font-medium text-white mb-6">Order Summary</h2>
 
                             <div className="space-y-4 mb-6">
                                 {cart.map((item) => (
-                                    <div key={`${item.product.id}-${item.selectedSize}`} className="flex justify-between">
+                                    <div
+                                        key={`${item.product.id}-${item.selectedSize}`}
+                                        className="flex justify-between items-start text-sm"
+                                    >
                                         <div>
-                                            <p className="font-medium">{item.product.name}</p>
-                                            <p className="text-sm text-gray-500">
+                                            <p className="font-medium text-white">{item.product.name}</p>
+                                            <p className="text-xs text-neutral-500 mt-1">
                                                 {item.selectedSize} / {item.selectedColor} × {item.quantity}
                                             </p>
                                         </div>
-                                        <span>{formatPriceUSD(item.product.price * item.quantity)}</span>
+                                        <span className="text-white">{formatPriceUSD(item.product.price * item.quantity)}</span>
                                     </div>
                                 ))}
                             </div>
 
-                            <div className="border-t pt-4 space-y-2">
+                            <div className="border-t border-white/10 pt-4 space-y-2 text-sm">
                                 <div className="flex justify-between">
-                                    <span className="text-gray-600">Subtotal</span>
-                                    <span>{formatPriceUSD(subtotal)}</span>
+                                    <span className="text-neutral-400">Subtotal</span>
+                                    <span className="text-white">{formatPriceUSD(subtotal)}</span>
                                 </div>
                                 <div className="flex justify-between">
-                                    <span className="text-gray-600">Shipping</span>
-                                    <span>{shipping === 0 ? "FREE" : formatPriceUSD(shipping)}</span>
+                                    <span className="text-neutral-400">Shipping</span>
+                                    <span className="text-white">
+                                        {shipping === 0 ? "Included" : formatPriceUSD(shipping)}
+                                    </span>
                                 </div>
-                                <div className="flex justify-between text-lg font-bold pt-2 border-t">
+                                <div className="flex justify-between text-base font-bold pt-4 border-t border-white/10 text-white mt-2">
                                     <span>Total</span>
                                     <span>{formatPriceUSD(total)}</span>
                                 </div>
