@@ -121,17 +121,16 @@ export default function CheckoutPage() {
                 <div className="container mx-auto px-6 py-4">
                     <div className="flex items-center justify-center gap-4">
                         <div className={`flex items-center gap-2 ${step === "shipping" ? "text-amber-600" : "text-gray-400"}`}>
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === "shipping" ? "bg-amber-600 text-white" :
-                                    step !== "shipping" ? "bg-green-500 text-white" : "bg-gray-200"
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === "shipping" ? "bg-amber-600 text-white" : "bg-green-500 text-white"
                                 }`}>
-                                {step !== "shipping" ? <Check className="w-4 h-4" /> : "1"}
+                                {step === "shipping" ? "1" : <Check className="w-4 h-4" />}
                             </div>
                             <span className="hidden sm:inline">Shipping</span>
                         </div>
                         <div className="w-12 h-0.5 bg-gray-200" />
                         <div className={`flex items-center gap-2 ${step === "payment" ? "text-amber-600" : "text-gray-400"}`}>
                             <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === "payment" ? "bg-amber-600 text-white" :
-                                    step === "processing" ? "bg-green-500 text-white" : "bg-gray-200"
+                                step === "processing" ? "bg-green-500 text-white" : "bg-gray-200"
                                 }`}>
                                 {step === "processing" ? <Check className="w-4 h-4" /> : "2"}
                             </div>
