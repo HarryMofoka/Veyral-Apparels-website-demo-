@@ -3,28 +3,29 @@
 import { useState, use } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, Heart, Share2, Minus, Plus } from "lucide-react";
+import { ChevronLeft, Share2, Minus, Plus, Heart } from "lucide-react";
 import { products } from "@/data/products";
-import { addToCart } from "@/utils/cart";
+import { useCart } from "@/context/CartContext";
 import { formatPriceUSD } from "@/utils/helpers";
 import ProductCard from "@/components/ProductCard";
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
+    const { addItem, openCart } = useCart();
     const product = products.find((p) => p.id === id);
 
-    const [selectedSize, setSelectedSize] = useState(product?.sizes[2] || "");
-    const [selectedColor, setSelectedColor] = useState(product?.colors[0]?.name || "");
+    const [selectedSize, setSelectedSize] = useState(product?.sizes?.[0] || "");
+    const [selectedColor, setSelectedColor] = useState(product?.colors?.[0]?.name || "");
     const [quantity, setQuantity] = useState(1);
     const [activeTab, setActiveTab] = useState("details");
 
     if (!product) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
+            <div className="min-h-screen bg-[#030303] flex items-center justify-center">
                 <div className="text-center">
-                    <h1 className="text-2xl font-bold mb-4">Product not found</h1>
-                    <Link href="/shop" className="text-amber-600 hover:underline">
-                        Back to Shop
+                    <h1 className="text-2xl font-medium text-white mb-4">System Error: Product Not Found</h1>
+                    <Link href="/shop" className="text-neutral-500 hover:text-white transition-colors underline">
+                        Return to Catalog
                     </Link>
                 </div>
             </div>
@@ -32,9 +33,14 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
     }
 
     const handleAddToCart = () => {
-        addToCart(product, quantity, selectedSize, selectedColor);
-        window.dispatchEvent(new Event("cartUpdated"));
-        alert(`Added ${quantity} ${product.name} to cart!`);
+        if (!product) return;
+        addItem({
+            product,
+            quantity,
+            selectedSize,
+            selectedColor,
+        });
+        openCart();
     };
 
     const relatedProducts = products
@@ -42,20 +48,23 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
         .slice(0, 4);
 
     return (
-        <div className="min-h-screen">
+        <div className="min-h-screen bg-[#030303] pt-20">
             {/* Breadcrumb */}
             <div className="container mx-auto px-6 py-4">
-                <Link href="/shop" className="flex items-center gap-2 text-gray-600 hover:text-black transition">
-                    <ChevronLeft className="w-4 h-4" /> Back to Shop
+                <Link
+                    href="/shop"
+                    className="flex items-center gap-2 text-xs text-neutral-500 hover:text-white transition-colors uppercase tracking-wider"
+                >
+                    <ChevronLeft className="w-4 h-4" /> Back to Catalog
                 </Link>
             </div>
 
             {/* Product Section */}
             <section className="container mx-auto px-6 py-8">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
                     {/* Images */}
                     <div>
-                        <div className="relative h-[500px] bg-gray-100 rounded-lg overflow-hidden mb-4">
+                        <div className="relative aspect-[4/5] bg-neutral-900 rounded-sm overflow-hidden border border-white/5">
                             <Image
                                 src={product.image}
                                 alt={product.name}
@@ -64,119 +73,155 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                                 priority
                             />
                         </div>
+                        {/* Thumbnails could go here */}
                     </div>
 
                     {/* Details */}
-                    <div>
-                        <p className="text-gray-500 mb-2">{product.category}</p>
-                        <h1 className="text-3xl md:text-4xl font-serif font-bold mb-4">{product.name}</h1>
-                        <p className="text-3xl font-bold mb-6">{formatPriceUSD(product.price)}</p>
-                        <p className="text-gray-600 mb-8">{product.description}</p>
+                    <div className="flex flex-col justify-center">
+                        <div className="flex items-center gap-3 mb-4">
+                            <span className="px-2 py-0.5 border border-white/10 rounded text-[10px] uppercase tracking-widest text-neutral-400">
+                                {product.category}
+                            </span>
+                            {product.isNew && (
+                                <span className="px-2 py-0.5 bg-white text-black rounded text-[10px] uppercase tracking-widest font-medium">
+                                    New Arrival
+                                </span>
+                            )}
+                        </div>
+
+                        <h1 className="text-4xl lg:text-5xl font-medium tracking-tight text-white mb-4">
+                            {product.name}
+                        </h1>
+
+                        <p className="text-2xl font-light text-white mb-8">
+                            {formatPriceUSD(product.price)}
+                        </p>
+
+                        <p className="text-neutral-400 text-sm leading-relaxed mb-10 border-l-2 border-white/10 pl-4">
+                            {product.description}
+                        </p>
 
                         {/* Color Selection */}
-                        <div className="mb-6">
-                            <h3 className="font-bold mb-3">Color</h3>
-                            <div className="flex gap-3">
-                                {product.colors.map((color) => (
-                                    <button
-                                        key={color.name}
-                                        onClick={() => setSelectedColor(color.name)}
-                                        className={`w-10 h-10 rounded-full border-2 transition ${selectedColor === color.name ? "border-gray-900 ring-2 ring-offset-2 ring-gray-900" : "border-gray-300"
-                                            }`}
-                                        style={{ backgroundColor: color.hex }}
-                                        title={color.name}
-                                    />
-                                ))}
+                        {product.colors && product.colors.length > 0 && (
+                            <div className="mb-8">
+                                <h3 className="text-white text-xs font-medium uppercase tracking-widest mb-3">
+                                    Color: <span className="text-neutral-500">{selectedColor}</span>
+                                </h3>
+                                <div className="flex gap-3">
+                                    {product.colors.map((color) => (
+                                        <button
+                                            key={color.name}
+                                            onClick={() => setSelectedColor(color.name)}
+                                            className={`w-8 h-8 rounded-full border-2 transition-all ${selectedColor === color.name
+                                                ? "border-white ring-2 ring-offset-2 ring-offset-[#030303] ring-white scale-110"
+                                                : "border-white/20 hover:border-white/50"
+                                                }`}
+                                            style={{ backgroundColor: color.hex }}
+                                            title={color.name}
+                                        />
+                                    ))}
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         {/* Size Selection */}
-                        <div className="mb-8">
-                            <div className="flex justify-between items-center mb-3">
-                                <h3 className="font-bold">Size</h3>
-                                <button className="text-sm underline text-gray-600">Size Guide</button>
-                            </div>
-                            <div className="flex flex-wrap gap-3">
-                                {product.sizes.map((size) => (
-                                    <button
-                                        key={size}
-                                        onClick={() => setSelectedSize(size)}
-                                        className={`px-6 py-3 rounded-full border transition ${selectedSize === size
-                                                ? "bg-gray-900 text-white border-gray-900"
-                                                : "bg-white border-gray-300 hover:border-gray-900"
-                                            }`}
-                                    >
-                                        {size}
+                        {product.sizes && product.sizes.length > 0 && (
+                            <div className="mb-10">
+                                <div className="flex justify-between items-center mb-3">
+                                    <h3 className="text-white text-xs font-medium uppercase tracking-widest">
+                                        Size: <span className="text-neutral-500">{selectedSize}</span>
+                                    </h3>
+                                    <button className="text-xs text-neutral-500 underline hover:text-white transition-colors">
+                                        Sizing Guide
                                     </button>
-                                ))}
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                    {product.sizes.map((size) => (
+                                        <button
+                                            key={size}
+                                            onClick={() => setSelectedSize(size)}
+                                            className={`min-w-[48px] h-10 px-3 rounded text-xs transition-colors border ${selectedSize === size
+                                                ? "bg-white text-black border-white"
+                                                : "bg-transparent text-neutral-400 border-white/10 hover:border-white/30 hover:text-white"
+                                                }`}
+                                        >
+                                            {size}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
+                        )}
 
-                        {/* Quantity & Add to Cart */}
-                        <div className="flex gap-4 mb-8">
-                            <div className="flex items-center border rounded-full">
+                        {/* Actions */}
+                        <div className="flex flex-col sm:flex-row gap-4 mb-10">
+                            <div className="flex items-center border border-white/10 rounded h-12 w-32">
                                 <button
                                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                    className="p-3 hover:bg-gray-100 transition"
+                                    className="h-full px-3 text-neutral-400 hover:text-white transition-colors flex items-center justify-center flex-1"
                                 >
-                                    <Minus className="w-5 h-5" />
+                                    <Minus className="w-4 h-4" />
                                 </button>
-                                <span className="px-6 font-medium">{quantity}</span>
+                                <span className="text-white text-sm font-medium w-8 text-center">{quantity}</span>
                                 <button
                                     onClick={() => setQuantity(quantity + 1)}
-                                    className="p-3 hover:bg-gray-100 transition"
+                                    className="h-full px-3 text-neutral-400 hover:text-white transition-colors flex items-center justify-center flex-1"
                                 >
-                                    <Plus className="w-5 h-5" />
+                                    <Plus className="w-4 h-4" />
                                 </button>
                             </div>
+
                             <button
                                 onClick={handleAddToCart}
-                                className="flex-grow bg-amber-600 hover:bg-amber-700 text-white py-4 rounded-full font-medium transition"
+                                className="flex-grow h-12 bg-white text-black rounded font-medium text-sm tracking-wide hover:bg-neutral-200 transition-colors uppercase"
                             >
                                 Add to Cart
                             </button>
-                        </div>
 
-                        {/* Actions */}
-                        <div className="flex gap-6 mb-8">
-                            <button className="flex items-center gap-2 text-gray-600 hover:text-black transition">
-                                <Heart className="w-5 h-5" /> Save for later
-                            </button>
-                            <button className="flex items-center gap-2 text-gray-600 hover:text-black transition">
-                                <Share2 className="w-5 h-5" /> Share
+                            <button className="h-12 w-12 border border-white/10 rounded flex items-center justify-center text-neutral-400 hover:text-white hover:border-white/30 transition-colors">
+                                <Heart className="w-5 h-5" />
                             </button>
                         </div>
 
                         {/* Tabs */}
-                        <div className="border-t pt-6">
-                            <div className="flex gap-8 mb-4">
+                        <div className="border-t border-white/5 pt-6">
+                            <div className="flex gap-8 mb-6 border-b border-white/5">
                                 <button
                                     onClick={() => setActiveTab("details")}
-                                    className={`pb-2 font-medium ${activeTab === "details" ? "border-b-2 border-black" : "text-gray-500"}`}
+                                    className={`pb-4 text-xs font-medium uppercase tracking-widest transition-colors relative ${activeTab === "details" ? "text-white" : "text-neutral-500 hover:text-neutral-300"
+                                        }`}
                                 >
-                                    Product Details
+                                    Specs
+                                    {activeTab === "details" && <span className="absolute bottom-0 left-0 w-full h-px bg-white"></span>}
                                 </button>
                                 <button
                                     onClick={() => setActiveTab("shipping")}
-                                    className={`pb-2 font-medium ${activeTab === "shipping" ? "border-b-2 border-black" : "text-gray-500"}`}
+                                    className={`pb-4 text-xs font-medium uppercase tracking-widest transition-colors relative ${activeTab === "shipping" ? "text-white" : "text-neutral-500 hover:text-neutral-300"
+                                        }`}
                                 >
-                                    Shipping & Returns
+                                    Delivery
+                                    {activeTab === "shipping" && <span className="absolute bottom-0 left-0 w-full h-px bg-white"></span>}
                                 </button>
                             </div>
-                            {activeTab === "details" && (
-                                <ul className="list-disc pl-5 space-y-2 text-gray-600">
-                                    <li>Premium quality fabric</li>
-                                    <li>Sustainable and ethically sourced materials</li>
-                                    <li>Designed for comfort and style</li>
-                                    <li>Machine washable</li>
-                                </ul>
-                            )}
-                            {activeTab === "shipping" && (
-                                <div className="text-gray-600 space-y-2">
-                                    <p>Free standard shipping on all orders.</p>
-                                    <p>Easy returns within 30 days of purchase.</p>
-                                </div>
-                            )}
+
+                            <div className="min-h-[100px]">
+                                {activeTab === "details" && (
+                                    <ul className="list-disc pl-4 space-y-2 text-neutral-400 text-sm leading-relaxed marker:text-neutral-600">
+                                        <li>Premium technical fabric blend (Nylon/Polyester)</li>
+                                        <li>Water-resistant coating via DWR protocols</li>
+                                        <li>Articulated joints for improved mobility</li>
+                                        <li>Reinforced stitching at stress points</li>
+                                        <li>Manufactured in zero-waste facility</li>
+                                    </ul>
+                                )}
+                                {activeTab === "shipping" && (
+                                    <div className="text-neutral-400 text-sm leading-relaxed space-y-2">
+                                        <p>Free global shipping on orders over $300.</p>
+                                        <p>Standard delivery: 3-5 business days.</p>
+                                        <p>Express delivery: 1-2 business days.</p>
+                                        <p>Returns accepted within 14 days of receipt in original condition.</p>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -184,10 +229,12 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
 
             {/* Related Products */}
             {relatedProducts.length > 0 && (
-                <section className="py-16 bg-gray-50">
+                <section className="py-24 border-t border-white/5">
                     <div className="container mx-auto px-6">
-                        <h2 className="text-3xl font-serif font-bold mb-10 text-center">You May Also Like</h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <h2 className="text-2xl font-medium tracking-tight text-white mb-12">
+                            Compatible Systems
+                        </h2>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             {relatedProducts.map((product) => (
                                 <ProductCard key={product.id} product={product} />
                             ))}

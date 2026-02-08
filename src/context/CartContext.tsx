@@ -1,7 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
-import { Product } from "@/data/products";
+import {
+    createContext,
+    useContext,
+    useState,
+    useEffect,
+    ReactNode,
+} from "react";
 import {
     CartItem,
     getCart,
@@ -10,21 +15,25 @@ import {
     updateQuantity as updateQuantityUtil,
     clearCart as clearCartUtil,
     getCartTotal,
-    getCartItemCount,
 } from "@/utils/cart";
 
 interface CartContextType {
     cart: CartItem[];
-    itemCount: number;
-    total: number;
     isCartOpen: boolean;
-    addItem: (product: Product, quantity: number, size: string, color: string) => void;
-    removeItem: (productId: string, size: string, color: string) => void;
-    updateItemQuantity: (productId: string, size: string, color: string, quantity: number) => void;
-    clearCart: () => void;
     openCart: () => void;
     closeCart: () => void;
     toggleCart: () => void;
+    itemCount: number;
+    addItem: (item: CartItem) => void;
+    removeItem: (productId: string, size: string, color: string) => void;
+    updateItemQuantity: (
+        productId: string,
+        size: string,
+        color: string,
+        quantity: number
+    ) => void;
+    clear: () => void;
+    total: number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -34,82 +43,77 @@ export function CartProvider({ children }: { children: ReactNode }) {
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
 
-    // Load cart from localStorage on mount
+    // Initialize cart from local storage
     useEffect(() => {
         setCart(getCart());
         setIsLoaded(true);
-    }, []);
 
-    // Listen for storage events (for cross-tab sync)
-    useEffect(() => {
-        const handleStorageChange = () => {
+        // Listen for storage events to sync across tabs
+        const handleStorage = () => {
             setCart(getCart());
         };
 
-        window.addEventListener("storage", handleStorageChange);
-        window.addEventListener("cartUpdated", handleStorageChange);
+        window.addEventListener("storage", handleStorage);
+        window.addEventListener("cartUpdated", handleStorage);
 
         return () => {
-            window.removeEventListener("storage", handleStorageChange);
-            window.removeEventListener("cartUpdated", handleStorageChange);
+            window.removeEventListener("storage", handleStorage);
+            window.removeEventListener("cartUpdated", handleStorage);
         };
     }, []);
 
-    const addItem = useCallback(
-        (product: Product, quantity: number, size: string, color: string) => {
-            const updatedCart = addToCartUtil(product, quantity, size, color);
-            setCart(updatedCart);
-            setIsCartOpen(true); // Open cart drawer when item added
-            window.dispatchEvent(new Event("cartUpdated"));
-        },
-        []
-    );
+    const openCart = () => setIsCartOpen(true);
+    const closeCart = () => setIsCartOpen(false);
+    const toggleCart = () => setIsCartOpen((prev) => !prev);
 
-    const removeItem = useCallback(
-        (productId: string, size: string, color: string) => {
-            const updatedCart = removeFromCartUtil(productId, size, color);
-            setCart(updatedCart);
-            window.dispatchEvent(new Event("cartUpdated"));
-        },
-        []
-    );
+    const addItem = (item: CartItem) => {
+        const updatedCart = addToCartUtil(
+            item.product,
+            item.quantity,
+            item.selectedSize,
+            item.selectedColor
+        );
+        setCart(updatedCart);
+        openCart();
+    };
 
-    const updateItemQuantity = useCallback(
-        (productId: string, size: string, color: string, quantity: number) => {
-            const updatedCart = updateQuantityUtil(productId, size, color, quantity);
-            setCart(updatedCart);
-            window.dispatchEvent(new Event("cartUpdated"));
-        },
-        []
-    );
+    const removeItem = (productId: string, size: string, color: string) => {
+        const updatedCart = removeFromCartUtil(productId, size, color);
+        setCart(updatedCart);
+    };
 
-    const clearCart = useCallback(() => {
+    const updateItemQuantity = (
+        productId: string,
+        size: string,
+        color: string,
+        quantity: number
+    ) => {
+        const updatedCart = updateQuantityUtil(productId, size, color, quantity);
+        setCart(updatedCart);
+    };
+
+    const clear = () => {
         clearCartUtil();
         setCart([]);
-        window.dispatchEvent(new Event("cartUpdated"));
-    }, []);
+    };
 
-    const openCart = useCallback(() => setIsCartOpen(true), []);
-    const closeCart = useCallback(() => setIsCartOpen(false), []);
-    const toggleCart = useCallback(() => setIsCartOpen((prev) => !prev), []);
-
-    const itemCount = isLoaded ? getCartItemCount(cart) : 0;
-    const total = isLoaded ? getCartTotal(cart) : 0;
+    const itemCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+    const total = getCartTotal(cart);
 
     return (
         <CartContext.Provider
             value={{
                 cart,
-                itemCount,
-                total,
                 isCartOpen,
-                addItem,
-                removeItem,
-                updateItemQuantity,
-                clearCart,
                 openCart,
                 closeCart,
                 toggleCart,
+                itemCount,
+                addItem,
+                removeItem,
+                updateItemQuantity,
+                clear,
+                total,
             }}
         >
             {children}

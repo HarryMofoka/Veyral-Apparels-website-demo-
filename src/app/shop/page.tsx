@@ -13,11 +13,10 @@ export default function ShopPage() {
     const [showFilters, setShowFilters] = useState(false);
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
 
-    // Filter and sort products
+    // Filter and sort logic... (unchanged logic)
     const filteredProducts = useMemo(() => {
         let result = [...products];
 
-        // Filter by search query
         if (searchQuery.trim()) {
             const query = searchQuery.toLowerCase();
             result = result.filter(
@@ -28,24 +27,20 @@ export default function ShopPage() {
             );
         }
 
-        // Filter by category
         if (selectedCategory !== "all") {
             result = result.filter((p) => p.category === selectedCategory);
         }
 
-        // Filter by tags
         if (selectedTags.length > 0) {
             result = result.filter((p) =>
                 selectedTags.some((tag) => p.tags.includes(tag))
             );
         }
 
-        // Filter by price range
         result = result.filter(
             (p) => p.price >= priceRange[0] && p.price <= priceRange[1]
         );
 
-        // Sort
         switch (sortBy) {
             case "price-low":
                 result.sort((a, b) => a.price - b.price);
@@ -89,60 +84,64 @@ export default function ShopPage() {
         priceRange[1] < 1000;
 
     return (
-        <div className="min-h-screen">
+        <div className="min-h-screen bg-[#030303] pt-24 pb-12">
             {/* Header */}
-            <section className="py-16 bg-gray-50">
+            <section className="mb-12">
                 <div className="container mx-auto px-6 text-center">
-                    <h1 className="text-4xl md:text-6xl font-serif font-bold mb-4">Shop</h1>
-                    <p className="text-gray-600 max-w-xl mx-auto">
+                    <h1 className="text-4xl md:text-5xl font-medium tracking-tight text-white mb-4">
+                        Catalog
+                    </h1>
+                    <p className="text-neutral-500 max-w-xl mx-auto text-sm">
                         Discover our curated collection of {products.length}+ premium pieces
-                        designed for everyday elegance.
+                        designed for your environment.
                     </p>
                 </div>
             </section>
 
-            {/* Search Bar */}
-            <section className="py-6 border-b">
-                <div className="container mx-auto px-6">
+            {/* Search & Toolbar */}
+            <section className="border-y border-white/5 bg-[#030303] sticky top-16 z-30 backdrop-blur-md bg-opacity-90">
+                <div className="container mx-auto px-6 py-4">
                     <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
                         {/* Search */}
                         <div className="relative w-full md:w-96">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
                             <input
                                 type="text"
                                 placeholder="Search products..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-12 pr-4 py-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-amber-600"
+                                className="w-full pl-10 pr-10 py-2 bg-neutral-900/50 border border-white/10 rounded-md text-white text-sm focus:outline-none focus:border-white/30 transition-colors placeholder:text-neutral-600"
                             />
                             {searchQuery && (
                                 <button
                                     onClick={() => setSearchQuery("")}
-                                    className="absolute right-4 top-1/2 -translate-y-1/2"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-white"
                                 >
-                                    <X className="w-4 h-4 text-gray-400" />
+                                    <X className="w-4 h-4" />
                                 </button>
                             )}
                         </div>
 
                         {/* Sort & Filter Toggle */}
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
                             <button
                                 onClick={() => setShowFilters(!showFilters)}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-full border transition ${showFilters ? "bg-gray-900 text-white" : "bg-white hover:bg-gray-50"
+                                className={`flex items-center gap-2 px-4 py-2 rounded-md border text-sm transition-colors ${showFilters
+                                        ? "bg-white text-black border-white"
+                                        : "bg-transparent text-neutral-400 border-white/10 hover:text-white hover:border-white/30"
                                     }`}
                             >
                                 <SlidersHorizontal className="w-4 h-4" />
                                 Filters
                                 {hasActiveFilters && (
-                                    <span className="w-2 h-2 bg-amber-600 rounded-full" />
+                                    <span className="w-1.5 h-1.5 bg-amber-500 rounded-full" />
                                 )}
                             </button>
 
                             <select
                                 value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value)}
-                                className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600"
+                                className="px-4 py-2 bg-transparent text-neutral-400 border border-white/10 rounded-md text-sm focus:outline-none focus:border-white/30 hover:text-white cursor-pointer"
                             >
                                 <option value="popularity">Most Popular</option>
                                 <option value="newest">Newest First</option>
@@ -156,23 +155,25 @@ export default function ShopPage() {
 
             {/* Filters Panel */}
             {showFilters && (
-                <section className="py-6 bg-gray-50 border-b">
+                <section className="bg-neutral-900/30 border-b border-white/5 py-8">
                     <div className="container mx-auto px-6">
-                        <div className="flex flex-wrap gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {/* Categories */}
                             <div>
-                                <h3 className="font-bold mb-3">Category</h3>
+                                <h3 className="text-white text-xs font-medium uppercase tracking-widest mb-4">
+                                    Category
+                                </h3>
                                 <div className="flex flex-wrap gap-2">
                                     {categories.map((cat) => (
                                         <button
                                             key={cat.id}
                                             onClick={() => setSelectedCategory(cat.id)}
-                                            className={`px-3 py-1 rounded-full text-sm border transition ${selectedCategory === cat.id
-                                                    ? "bg-gray-900 text-white border-gray-900"
-                                                    : "bg-white border-gray-300 hover:border-gray-900"
+                                            className={`px-3 py-1.5 rounded text-xs transition-colors border ${selectedCategory === cat.id
+                                                    ? "bg-white text-black border-white"
+                                                    : "bg-transparent text-neutral-400 border-white/10 hover:border-white/30 hover:text-white"
                                                 }`}
                                         >
-                                            {cat.name} ({cat.count})
+                                            {cat.name} <span className="opacity-50 ml-1">{cat.count}</span>
                                         </button>
                                     ))}
                                 </div>
@@ -180,41 +181,47 @@ export default function ShopPage() {
 
                             {/* Price Range */}
                             <div>
-                                <h3 className="font-bold mb-3">Price Range</h3>
-                                <div className="flex items-center gap-2">
+                                <h3 className="text-white text-xs font-medium uppercase tracking-widest mb-4">
+                                    Price Range
+                                </h3>
+                                <div className="flex items-center gap-2 text-white">
+                                    <span className="text-neutral-500">$</span>
                                     <input
                                         type="number"
                                         value={priceRange[0]}
                                         onChange={(e) =>
                                             setPriceRange([Number(e.target.value), priceRange[1]])
                                         }
-                                        className="w-20 px-2 py-1 border rounded"
+                                        className="w-20 px-2 py-1 bg-neutral-900 border border-white/10 rounded text-sm focus:outline-none focus:border-white/30"
                                         min="0"
                                     />
-                                    <span>-</span>
+                                    <span className="text-neutral-500">-</span>
+                                    <span className="text-neutral-500">$</span>
                                     <input
                                         type="number"
                                         value={priceRange[1]}
                                         onChange={(e) =>
                                             setPriceRange([priceRange[0], Number(e.target.value)])
                                         }
-                                        className="w-20 px-2 py-1 border rounded"
+                                        className="w-20 px-2 py-1 bg-neutral-900 border border-white/10 rounded text-sm focus:outline-none focus:border-white/30"
                                         min="0"
                                     />
                                 </div>
                             </div>
 
                             {/* Tags */}
-                            <div className="flex-grow">
-                                <h3 className="font-bold mb-3">Tags</h3>
-                                <div className="flex flex-wrap gap-2 max-h-24 overflow-y-auto">
+                            <div className="md:col-span-1">
+                                <h3 className="text-white text-xs font-medium uppercase tracking-widest mb-4">
+                                    Tags
+                                </h3>
+                                <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto pr-2 custom-scrollbar">
                                     {allTags.slice(0, 20).map((tag) => (
                                         <button
                                             key={tag}
                                             onClick={() => toggleTag(tag)}
-                                            className={`px-3 py-1 rounded-full text-sm border transition ${selectedTags.includes(tag)
-                                                    ? "bg-amber-600 text-white border-amber-600"
-                                                    : "bg-white border-gray-300 hover:border-amber-600"
+                                            className={`px-3 py-1.5 rounded text-xs transition-colors border ${selectedTags.includes(tag)
+                                                    ? "bg-white text-black border-white"
+                                                    : "bg-transparent text-neutral-400 border-white/10 hover:border-white/30 hover:text-white"
                                                 }`}
                                         >
                                             {tag}
@@ -225,48 +232,47 @@ export default function ShopPage() {
                         </div>
 
                         {/* Clear Filters */}
-                        {hasActiveFilters && (
+                        <div className="mt-8 flex justify-end border-t border-white/5 pt-4">
                             <button
                                 onClick={clearFilters}
-                                className="mt-4 text-sm text-amber-600 hover:underline"
+                                className="text-xs text-neutral-500 hover:text-white transition-colors"
                             >
-                                Clear all filters
+                                Reset All Filters
                             </button>
-                        )}
+                        </div>
                     </div>
                 </section>
             )}
 
             {/* Active Filters Display */}
             {hasActiveFilters && !showFilters && (
-                <section className="py-4 border-b">
+                <section className="py-4 border-b border-white/5">
                     <div className="container mx-auto px-6">
                         <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-sm text-gray-500">Active filters:</span>
+                            <span className="text-xs text-neutral-500 uppercase tracking-wide mr-2">
+                                Active:
+                            </span>
                             {selectedCategory !== "all" && (
-                                <span className="px-3 py-1 bg-gray-100 rounded-full text-sm flex items-center gap-1">
+                                <span className="px-2 py-1 bg-white/10 rounded text-xs text-white flex items-center gap-1 hover:bg-white/20 transition-colors cursor-pointer" onClick={() => setSelectedCategory("all")}>
                                     {selectedCategory}
-                                    <button onClick={() => setSelectedCategory("all")}>
-                                        <X className="w-3 h-3" />
-                                    </button>
+                                    <X className="w-3 h-3 opacity-70" />
                                 </span>
                             )}
                             {selectedTags.map((tag) => (
                                 <span
                                     key={tag}
-                                    className="px-3 py-1 bg-amber-100 rounded-full text-sm flex items-center gap-1"
+                                    className="px-2 py-1 bg-white/10 rounded text-xs text-white flex items-center gap-1 hover:bg-white/20 transition-colors cursor-pointer"
+                                    onClick={() => toggleTag(tag)}
                                 >
                                     {tag}
-                                    <button onClick={() => toggleTag(tag)}>
-                                        <X className="w-3 h-3" />
-                                    </button>
+                                    <X className="w-3 h-3 opacity-70" />
                                 </span>
                             ))}
                             <button
                                 onClick={clearFilters}
-                                className="text-sm text-amber-600 hover:underline ml-2"
+                                className="text-xs text-amber-500 hover:text-amber-400 ml-2"
                             >
-                                Clear all
+                                Clear All
                             </button>
                         </div>
                     </div>
@@ -276,22 +282,24 @@ export default function ShopPage() {
             {/* Products Grid */}
             <section className="py-12">
                 <div className="container mx-auto px-6">
-                    <p className="text-gray-500 mb-8">
-                        {filteredProducts.length} product{filteredProducts.length !== 1 ? "s" : ""}
+                    <p className="text-neutral-500 text-xs uppercase tracking-wide mb-8">
+                        Showing {filteredProducts.length} Result{filteredProducts.length !== 1 ? "s" : ""}
                     </p>
 
                     {filteredProducts.length === 0 ? (
-                        <div className="text-center py-16">
-                            <p className="text-xl text-gray-500 mb-4">No products found</p>
+                        <div className="text-center py-24 border border-white/5 rounded-lg bg-white/5">
+                            <p className="text-xl text-white font-light mb-4">
+                                No systems found matching your parameters.
+                            </p>
                             <button
                                 onClick={clearFilters}
-                                className="text-amber-600 hover:underline"
+                                className="text-neutral-400 hover:text-white underline text-sm"
                             >
-                                Clear filters and try again
+                                Reset filters
                             </button>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
                             {filteredProducts.map((product) => (
                                 <ProductCard key={product.id} product={product} />
                             ))}

@@ -1,27 +1,23 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Montserrat } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
 import { CartProvider } from "@/context/CartContext";
 
-const playfair = Playfair_Display({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-playfair",
-});
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  variable: "--font-montserrat",
+  variable: "--font-inter",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "VEYRAL | Premium Clothing",
-  description: "Premium clothing designed for everyday elegance and lasting quality.",
+  title: "VEYRAL | Technical Luxury",
+  description: "Engineered for the modern aesthetic. Technical utility meets refined luxury.",
   openGraph: {
-    title: "VEYRAL | Premium Clothing",
-    description: "Premium clothing designed for everyday elegance.",
+    title: "VEYRAL | Technical Luxury",
+    description: "Engineered for the modern aesthetic.",
     type: "website",
   },
 };
@@ -32,12 +28,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${playfair.variable} ${montserrat.variable} font-sans antialiased`}>
+    <html lang="en" className="scroll-smooth">
+      <body className={`${inter.variable} font-sans antialiased bg-[#030303] text-[#EDEDED]`}>
         <CartProvider>
+          {/* Loader will be handled in a client component or page if needed, 
+              but for now passing basic layout elements */}
+
+          {/* We'll update Navbar to be transparent and fixed */}
           <Navbar />
+
           <CartDrawer />
-          <main className="pt-20 min-h-screen">{children}</main>
+
+          {/* Removed pt-20 to allow hero to bleed to top */}
+          <main className="min-h-screen">{children}</main>
+
           <Footer />
         </CartProvider>
       </body>

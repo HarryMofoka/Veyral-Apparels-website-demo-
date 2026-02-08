@@ -1,13 +1,20 @@
 "use client";
 
-import Link from "next/link";
+import { X, Plus, Minus } from "lucide-react";
 import Image from "next/image";
-import { X, Minus, Plus, ShoppingBag } from "lucide-react";
+import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { formatPriceUSD } from "@/utils/helpers";
 
 export default function CartDrawer() {
-    const { cart, isCartOpen, closeCart, removeItem, updateItemQuantity, total, itemCount } = useCart();
+    const {
+        cart,
+        isCartOpen,
+        closeCart,
+        removeItem,
+        updateItemQuantity,
+        total,
+    } = useCart();
 
     if (!isCartOpen) return null;
 
@@ -20,148 +27,120 @@ export default function CartDrawer() {
             />
 
             {/* Drawer */}
-            <div className="fixed right-0 top-0 h-full w-full max-w-md bg-white z-[60] shadow-xl flex flex-col animate-slide-in-right">
+            <div className="fixed inset-y-0 right-0 w-full md:w-[400px] bg-[#050505] z-[60] shadow-2xl border-l border-white/5 flex flex-col animate-slide-in-right">
                 {/* Header */}
-                <div className="flex items-center justify-between p-6 border-b">
-                    <h2 className="text-xl font-bold flex items-center gap-2">
-                        <ShoppingBag className="w-5 h-5" />
-                        Cart ({itemCount})
+                <div className="h-16 border-b border-white/5 flex items-center justify-between px-6">
+                    <h2 className="text-sm font-medium tracking-wide text-white">
+                        Cart ({cart.reduce((acc, item) => acc + item.quantity, 0)})
                     </h2>
                     <button
                         onClick={closeCart}
-                        className="p-2 hover:bg-gray-100 rounded-full transition"
+                        className="text-neutral-500 hover:text-white transition-colors"
                     >
                         <X className="w-5 h-5" />
                     </button>
                 </div>
 
                 {/* Cart Items */}
-                <div className="flex-grow overflow-y-auto p-6">
+                <div className="flex-1 overflow-y-auto p-6 space-y-6">
                     {cart.length === 0 ? (
-                        <div className="text-center py-12">
-                            <ShoppingBag className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-                            <p className="text-gray-500 mb-4">Your cart is empty</p>
-                            <button
-                                onClick={closeCart}
-                                className="text-amber-600 hover:underline"
-                            >
-                                Continue Shopping
-                            </button>
+                        <div className="text-center text-neutral-500 py-10 text-sm">
+                            Your cart is empty.
                         </div>
                     ) : (
-                        <div className="space-y-4">
-                            {cart.map((item) => (
-                                <div
-                                    key={`${item.product.id}-${item.selectedSize}-${item.selectedColor}`}
-                                    className="flex gap-4 pb-4 border-b"
-                                >
-                                    {/* Product Image */}
-                                    <div className="relative w-20 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                                        <Image
-                                            src={item.product.image}
-                                            alt={item.product.name}
-                                            fill
-                                            className="object-cover"
-                                            sizes="80px"
-                                        />
+                        cart.map((item) => (
+                            <div
+                                key={`${item.product.id}-${item.selectedSize}-${item.selectedColor}`}
+                                className="flex gap-4 group"
+                            >
+                                <div className="w-20 h-24 bg-neutral-900 overflow-hidden rounded-sm border border-white/5 relative flex-shrink-0">
+                                    <Image
+                                        src={item.product.image}
+                                        alt={item.product.name}
+                                        fill
+                                        className="object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                                        sizes="80px"
+                                    />
+                                </div>
+                                <div className="flex-1 flex flex-col justify-between py-1">
+                                    <div>
+                                        <h3 className="text-white font-medium text-xs tracking-wide">
+                                            {item.product.name}
+                                        </h3>
+                                        <p className="text-neutral-500 text-[10px] mt-1 uppercase tracking-wider">
+                                            {item.selectedColor} / {item.selectedSize}
+                                        </p>
                                     </div>
-
-                                    {/* Details */}
-                                    <div className="flex-grow">
-                                        <div className="flex justify-between">
-                                            <div>
-                                                <h3 className="font-medium text-sm">{item.product.name}</h3>
-                                                <p className="text-xs text-gray-500">
-                                                    {item.selectedSize} / {item.selectedColor}
-                                                </p>
-                                            </div>
+                                    <div className="flex justify-between items-center text-xs">
+                                        <div className="flex items-center gap-2 border border-white/10 rounded px-1">
                                             <button
                                                 onClick={() =>
-                                                    removeItem(item.product.id, item.selectedSize, item.selectedColor)
+                                                    updateItemQuantity(
+                                                        item.product.id,
+                                                        item.selectedSize,
+                                                        item.selectedColor,
+                                                        item.quantity - 1
+                                                    )
                                                 }
-                                                className="text-gray-400 hover:text-red-500 transition"
+                                                className="p-1 text-neutral-500 hover:text-white"
                                             >
-                                                <X className="w-4 h-4" />
+                                                <Minus className="w-3 h-3" />
+                                            </button>
+                                            <span className="text-neutral-300 w-4 text-center">
+                                                {item.quantity}
+                                            </span>
+                                            <button
+                                                onClick={() =>
+                                                    updateItemQuantity(
+                                                        item.product.id,
+                                                        item.selectedSize,
+                                                        item.selectedColor,
+                                                        item.quantity + 1
+                                                    )
+                                                }
+                                                disabled={item.quantity >= item.product.stock}
+                                                className="p-1 text-neutral-500 hover:text-white disabled:opacity-30"
+                                            >
+                                                <Plus className="w-3 h-3" />
                                             </button>
                                         </div>
-
-                                        <div className="flex items-center justify-between mt-2">
-                                            {/* Quantity */}
-                                            <div className="flex items-center border rounded-full">
-                                                <button
-                                                    onClick={() =>
-                                                        updateItemQuantity(
-                                                            item.product.id,
-                                                            item.selectedSize,
-                                                            item.selectedColor,
-                                                            item.quantity - 1
-                                                        )
-                                                    }
-                                                    disabled={item.quantity <= 1}
-                                                    className="p-1 hover:bg-gray-100 rounded-full transition disabled:opacity-50 disabled:cursor-not-allowed"
-                                                    aria-label="Decrease quantity"
-                                                >
-                                                    <Minus className="w-3 h-3" />
-                                                </button>
-                                                <span className="px-2 text-sm">{item.quantity}</span>
-                                                <button
-                                                    onClick={() =>
-                                                        updateItemQuantity(
-                                                            item.product.id,
-                                                            item.selectedSize,
-                                                            item.selectedColor,
-                                                            item.quantity + 1
-                                                        )
-                                                    }
-                                                    disabled={item.quantity >= item.product.stock}
-                                                    className="p-1 hover:bg-gray-100 rounded-full transition disabled:opacity-50 disabled:cursor-not-allowed"
-                                                    aria-label={
-                                                        item.quantity >= item.product.stock
-                                                            ? "Maximum stock reached"
-                                                            : "Increase quantity"
-                                                    }
-                                                    title={
-                                                        item.quantity >= item.product.stock
-                                                            ? `Only ${item.product.stock} in stock`
-                                                            : undefined
-                                                    }
-                                                >
-                                                    <Plus className="w-3 h-3" />
-                                                </button>
-                                            </div>
-
-                                            <p className="font-bold text-sm">
+                                        <div className="text-right">
+                                            <span className="text-white font-medium block">
                                                 {formatPriceUSD(item.product.price * item.quantity)}
-                                            </p>
+                                            </span>
+                                            <button
+                                                onClick={() =>
+                                                    removeItem(
+                                                        item.product.id,
+                                                        item.selectedSize,
+                                                        item.selectedColor
+                                                    )
+                                                }
+                                                className="text-[10px] text-neutral-600 hover:text-red-500 mt-1"
+                                            >
+                                                Remove
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                            ))}
-                        </div>
+                            </div>
+                        ))
                     )}
                 </div>
 
                 {/* Footer */}
                 {cart.length > 0 && (
-                    <div className="p-6 border-t bg-gray-50">
-                        <div className="flex justify-between mb-4">
-                            <span className="text-gray-600">Subtotal</span>
-                            <span className="font-bold">{formatPriceUSD(total)}</span>
+                    <div className="p-6 border-t border-white/5 bg-[#050505]">
+                        <div className="flex justify-between text-xs mb-6">
+                            <span className="text-neutral-400">Total</span>
+                            <span className="text-white font-medium">
+                                {formatPriceUSD(total)}
+                            </span>
                         </div>
-                        <p className="text-xs text-gray-500 mb-4">
-                            Shipping and taxes calculated at checkout
-                        </p>
-                        <Link
-                            href="/cart"
-                            onClick={closeCart}
-                            className="block w-full bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-full text-center font-medium transition mb-2"
-                        >
-                            View Cart
-                        </Link>
                         <Link
                             href="/checkout"
                             onClick={closeCart}
-                            className="block w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-full text-center font-medium transition"
+                            className="block w-full bg-white text-black py-3 rounded text-xs font-semibold tracking-wide hover:bg-neutral-200 transition-colors text-center"
                         >
                             Checkout
                         </Link>
