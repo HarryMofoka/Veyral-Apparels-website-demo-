@@ -15,12 +15,12 @@ export default function CartDrawer() {
         <>
             {/* Backdrop */}
             <div
-                className="fixed inset-0 bg-black/50 z-40 transition-opacity"
+                className="fixed inset-0 bg-black/50 z-[55] transition-opacity"
                 onClick={closeCart}
             />
 
             {/* Drawer */}
-            <div className="fixed right-0 top-0 h-full w-full max-w-md bg-white z-50 shadow-xl flex flex-col animate-slide-in-right">
+            <div className="fixed right-0 top-0 h-full w-full max-w-md bg-white z-[60] shadow-xl flex flex-col animate-slide-in-right">
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 border-b">
                     <h2 className="text-xl font-bold flex items-center gap-2">
