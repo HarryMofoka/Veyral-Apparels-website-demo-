@@ -79,7 +79,8 @@ export function updateQuantity(
     );
 
     if (item) {
-        item.quantity = Math.max(1, quantity);
+        // Clamp quantity between 1 and available stock
+        item.quantity = Math.max(1, Math.min(quantity, item.product.stock));
     }
 
     saveCart(cart);

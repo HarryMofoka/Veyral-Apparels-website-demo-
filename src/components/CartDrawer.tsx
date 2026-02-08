@@ -98,7 +98,8 @@ export default function CartDrawer() {
                                                         )
                                                     }
                                                     disabled={item.quantity <= 1}
-                                                    className="p-1 hover:bg-gray-100 rounded-full transition disabled:opacity-50"
+                                                    className="p-1 hover:bg-gray-100 rounded-full transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                                    aria-label="Decrease quantity"
                                                 >
                                                     <Minus className="w-3 h-3" />
                                                 </button>
@@ -112,7 +113,18 @@ export default function CartDrawer() {
                                                             item.quantity + 1
                                                         )
                                                     }
-                                                    className="p-1 hover:bg-gray-100 rounded-full transition"
+                                                    disabled={item.quantity >= item.product.stock}
+                                                    className="p-1 hover:bg-gray-100 rounded-full transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                                    aria-label={
+                                                        item.quantity >= item.product.stock
+                                                            ? "Maximum stock reached"
+                                                            : "Increase quantity"
+                                                    }
+                                                    title={
+                                                        item.quantity >= item.product.stock
+                                                            ? `Only ${item.product.stock} in stock`
+                                                            : undefined
+                                                    }
                                                 >
                                                     <Plus className="w-3 h-3" />
                                                 </button>
