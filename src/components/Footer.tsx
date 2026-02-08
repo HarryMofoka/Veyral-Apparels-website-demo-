@@ -52,8 +52,13 @@ export default function Footer() {
                     </h4>
                     <ul className="space-y-2 text-xs font-normal">
                         <li>
-                            <Link href="#" className="hover:text-white transition-colors">
+                            <Link href="/about" className="hover:text-white transition-colors">
                                 About VEYRAL
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/contact" className="hover:text-white transition-colors">
+                                Contact
                             </Link>
                         </li>
                         <li>
