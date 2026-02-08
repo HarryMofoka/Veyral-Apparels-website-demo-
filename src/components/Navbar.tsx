@@ -1,29 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ShoppingBag, Search, Menu, X } from "lucide-react";
-import { getCart, getCartItemCount } from "@/utils/cart";
+import { useCart } from "@/context/CartContext";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
-    const [cartCount, setCartCount] = useState(0);
-
-    useEffect(() => {
-        const updateCartCount = () => {
-            const cart = getCart();
-            setCartCount(getCartItemCount(cart));
-        };
-
-        updateCartCount();
-        window.addEventListener("storage", updateCartCount);
-        window.addEventListener("cartUpdated", updateCartCount);
-
-        return () => {
-            window.removeEventListener("storage", updateCartCount);
-            window.removeEventListener("cartUpdated", updateCartCount);
-        };
-    }, []);
+    const { itemCount, openCart } = useCart();
 
     const navLinks = [
         { href: "/", label: "Home" },
@@ -58,14 +42,17 @@ export default function Navbar() {
                     <button className="p-2 hover:bg-gray-100 rounded-full transition">
                         <Search className="w-5 h-5" />
                     </button>
-                    <Link href="/cart" className="p-2 hover:bg-gray-100 rounded-full transition relative">
+                    <button
+                        onClick={openCart}
+                        className="p-2 hover:bg-gray-100 rounded-full transition relative"
+                    >
                         <ShoppingBag className="w-5 h-5" />
-                        {cartCount > 0 && (
+                        {itemCount > 0 && (
                             <span className="absolute -top-1 -right-1 bg-amber-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                                {cartCount}
+                                {itemCount > 99 ? "99+" : itemCount}
                             </span>
                         )}
-                    </Link>
+                    </button>
                     <button
                         className="md:hidden p-2 hover:bg-gray-100 rounded-full transition"
                         onClick={() => setIsOpen(!isOpen)}
