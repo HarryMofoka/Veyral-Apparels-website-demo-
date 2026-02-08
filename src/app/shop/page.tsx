@@ -1,3 +1,17 @@
+/**
+ * ShopPage Component
+ * 
+ * The main catalog/shop page for the VEYRAL e-commerce site.
+ * Features:
+ * - Search functionality (by name, description, tags)
+ * - Category filtering with count badges
+ * - Tag-based filtering with multi-select
+ * - Price range filtering
+ * - Multiple sort options (popularity, newest, price)
+ * - Responsive grid layout with ProductCard components
+ * 
+ * @page /shop
+ */
 "use client";
 
 import { useState, useMemo } from "react";
@@ -6,17 +20,39 @@ import { products, categories, allTags } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 
 export default function ShopPage() {
+    /* ================================
+       STATE MANAGEMENT
+       ================================ */
+
+    // Current category filter - "all" or category ID
     const [selectedCategory, setSelectedCategory] = useState("all");
+
+    // Array of selected tag strings for multi-tag filtering
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+    // Current sort method - popularity (default), newest, price-low, price-high
     const [sortBy, setSortBy] = useState("popularity");
+
+    // Search query for filtering by name/description/tags
     const [searchQuery, setSearchQuery] = useState("");
+
+    // Toggle for filter panel visibility on mobile/desktop
     const [showFilters, setShowFilters] = useState(false);
+
+    // Price range tuple [min, max] for price filtering
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
 
-    // Filter and sort logic... (unchanged logic)
+    /* ================================
+       FILTER & SORT LOGIC
+       
+       Uses useMemo for performance optimization.
+       Recalculates only when filter dependencies change.
+       Filter order: search → category → tags → price → sort
+       ================================ */
     const filteredProducts = useMemo(() => {
         let result = [...products];
 
+        // Step 1: Search filter - matches name, description, or tags
         if (searchQuery.trim()) {
             const query = searchQuery.toLowerCase();
             result = result.filter(
@@ -27,20 +63,24 @@ export default function ShopPage() {
             );
         }
 
+        // Step 2: Category filter
         if (selectedCategory !== "all") {
             result = result.filter((p) => p.category === selectedCategory);
         }
 
+        // Step 3: Tags filter - product must have at least one selected tag
         if (selectedTags.length > 0) {
             result = result.filter((p) =>
                 selectedTags.some((tag) => p.tags.includes(tag))
             );
         }
 
+        // Step 4: Price range filter
         result = result.filter(
             (p) => p.price >= priceRange[0] && p.price <= priceRange[1]
         );
 
+        // Step 5: Sort products by selected method
         switch (sortBy) {
             case "price-low":
                 result.sort((a, b) => a.price - b.price);
@@ -127,8 +167,8 @@ export default function ShopPage() {
                             <button
                                 onClick={() => setShowFilters(!showFilters)}
                                 className={`flex items-center gap-2 px-4 py-2 rounded-md border text-sm transition-colors ${showFilters
-                                        ? "bg-white text-black border-white"
-                                        : "bg-transparent text-neutral-400 border-white/10 hover:text-white hover:border-white/30"
+                                    ? "bg-white text-black border-white"
+                                    : "bg-transparent text-neutral-400 border-white/10 hover:text-white hover:border-white/30"
                                     }`}
                             >
                                 <SlidersHorizontal className="w-4 h-4" />
@@ -169,8 +209,8 @@ export default function ShopPage() {
                                             key={cat.id}
                                             onClick={() => setSelectedCategory(cat.id)}
                                             className={`px-3 py-1.5 rounded text-xs transition-colors border ${selectedCategory === cat.id
-                                                    ? "bg-white text-black border-white"
-                                                    : "bg-transparent text-neutral-400 border-white/10 hover:border-white/30 hover:text-white"
+                                                ? "bg-white text-black border-white"
+                                                : "bg-transparent text-neutral-400 border-white/10 hover:border-white/30 hover:text-white"
                                                 }`}
                                         >
                                             {cat.name} <span className="opacity-50 ml-1">{cat.count}</span>
@@ -220,8 +260,8 @@ export default function ShopPage() {
                                             key={tag}
                                             onClick={() => toggleTag(tag)}
                                             className={`px-3 py-1.5 rounded text-xs transition-colors border ${selectedTags.includes(tag)
-                                                    ? "bg-white text-black border-white"
-                                                    : "bg-transparent text-neutral-400 border-white/10 hover:border-white/30 hover:text-white"
+                                                ? "bg-white text-black border-white"
+                                                : "bg-transparent text-neutral-400 border-white/10 hover:border-white/30 hover:text-white"
                                                 }`}
                                         >
                                             {tag}

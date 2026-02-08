@@ -1,5 +1,30 @@
+/**
+ * VEYRAL Global Styles
+ * 
+ * This file contains all global CSS styles, custom properties (CSS variables),
+ * animations, and utility classes for the VEYRAL e-commerce site.
+ * 
+ * Organization:
+ * 1. Tailwind Import & Theme Configuration
+ * 2. Root Variables
+ * 3. Base Styles
+ * 4. Custom Scrollbar
+ * 5. Animation Utilities (reveal-text, fade-up)
+ * 6. Image Interactions
+ * 7. Marquee Animation
+ * 8. Loader Overlay
+ * 9. Background Patterns
+ * 10. Glass Panel Effect
+ * 11. Slide-in Animation (Cart Drawer)
+ * 12. Shimmer Animation (Loading States)
+ */
+
+/* ============================================
+   1. TAILWIND IMPORT & THEME CONFIGURATION
+   ============================================ */
 @import "tailwindcss";
 
+/* Custom theme colors - extends Tailwind's neutral palette */
 @theme {
   --color-neutral-950: #030303;
   --color-neutral-900: #171717;
@@ -7,18 +32,30 @@
   --color-neutral-700: #404040;
 }
 
+/* ============================================
+   2. ROOT VARIABLES
+   ============================================ */
+/* Primary color scheme variables for dark theme */
 :root {
   --background: #030303;
+  /* Near-black background */
   --foreground: #ededed;
+  /* Off-white text */
 }
 
+/* ============================================
+   3. BASE STYLES
+   ============================================ */
 body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter), sans-serif;
 }
 
-/* Custom Scrollbar */
+/* ============================================
+   4. CUSTOM SCROLLBAR
+   Minimal dark scrollbar that matches the site aesthetic
+   ============================================ */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -37,7 +74,21 @@ body {
   background: #404040;
 }
 
-/* Animation Utilities */
+/* ============================================
+   5. ANIMATION UTILITIES
+   ============================================ */
+
+/**
+ * Reveal Text Animation
+ * 
+ * Creates a dramatic text reveal effect using:
+ * - translateY: slides text up from below
+ * - opacity: fades in
+ * - clip-path: reveals text like a curtain opening
+ * 
+ * Usage: Add 'reveal-text' class to element, then add 'active' 
+ * class via JavaScript to trigger the animation.
+ */
 .reveal-text {
   transform: translateY(100%);
   opacity: 0;
@@ -51,6 +102,15 @@ body {
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
 
+/**
+ * Fade Up Animation
+ * 
+ * Simple scroll-triggered animation that fades in and slides up.
+ * Used with Intersection Observer in React components.
+ * 
+ * Usage: Add 'fade-up' class, then add 'visible' class when 
+ * element enters viewport.
+ */
 .fade-up {
   opacity: 0;
   transform: translateY(20px);
@@ -63,7 +123,10 @@ body {
   transform: translateY(0);
 }
 
-/* Image Interaction */
+/* ============================================
+   6. IMAGE INTERACTIONS
+   Subtle zoom effect on image hover
+   ============================================ */
 .img-zoom-container {
   overflow: hidden;
 }
@@ -72,11 +135,15 @@ body {
   transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease;
 }
 
+/* Apply 3% scale on parent hover for subtle zoom */
 .group:hover .img-zoom {
   transform: scale(1.03);
 }
 
-/* Marquee Animation */
+/* ============================================
+   7. MARQUEE ANIMATION
+   Horizontal scrolling text for brand messaging
+   ============================================ */
 @keyframes marquee {
   0% {
     transform: translateX(0);
@@ -87,11 +154,15 @@ body {
   }
 }
 
+/* Continuous horizontal scroll - 30 second cycle */
 .animate-marquee {
   animation: marquee 30s linear infinite;
 }
 
-/* Loader */
+/* ============================================
+   8. LOADER OVERLAY
+   Full-screen loading state for page transitions
+   ============================================ */
 .loader-overlay {
   position: fixed;
   inset: 0;
@@ -103,7 +174,10 @@ body {
   transition: opacity 0.6s ease, visibility 0.6s;
 }
 
-/* Grid Lines Background Pattern */
+/* ============================================
+   9. BACKGROUND PATTERNS
+   Subtle grid pattern overlay for depth
+   ============================================ */
 .bg-grid-pattern {
   background-size: 40px 40px;
   background-image: linear-gradient(to right,
@@ -112,14 +186,20 @@ body {
     linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }
 
-/* Utility for blurred backdrop */
+/* ============================================
+   10. GLASS PANEL EFFECT
+   Frosted glass effect for navbar and overlays
+   ============================================ */
 .glass-panel {
   background: rgba(3, 3, 3, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
-/* Slide-in Right Animation (for Cart Drawer) */
+/* ============================================
+   11. SLIDE-IN ANIMATION (Cart Drawer)
+   Right-side slide-in for cart drawer panel
+   ============================================ */
 @keyframes slide-in-right {
   from {
     transform: translateX(100%);
@@ -134,7 +214,10 @@ body {
   animation: slide-in-right 0.3s ease-out forwards;
 }
 
-/* Shimmer Animation */
+/* ============================================
+   12. SHIMMER ANIMATION (Loading States)
+   Skeleton loading shimmer effect
+   ============================================ */
 @keyframes shimmer {
   100% {
     transform: translateX(100%);
