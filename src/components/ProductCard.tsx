@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Product } from "@/data/products";
@@ -8,8 +9,38 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+    const cardRef = useRef<HTMLAnchorElement>(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+
+        if (cardRef.current) {
+            observer.observe(cardRef.current);
+        }
+
+        return () => {
+            if (cardRef.current) {
+                observer.unobserve(cardRef.current);
+            }
+        };
+    }, []);
+
     return (
-        <Link href={`/product/${product.id}`} className="group block fade-up">
+        <Link
+            ref={cardRef}
+            href={`/product/${product.id}`}
+            className="group block fade-up"
+        >
             <div className="relative w-full aspect-[4/5] overflow-hidden bg-neutral-900 rounded-md border border-white/5 mb-4">
                 <Image
                     src={product.image}
