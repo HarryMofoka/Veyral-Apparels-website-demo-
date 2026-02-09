@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { CheckCircle, Package, Printer, Mail, ArrowRight } from "lucide-react";
 import { getCurrentOrder, Order, clearCurrentOrder } from "@/utils/order";
-import { formatPriceUSD } from "@/utils/helpers";
+import { formatPrice } from "@/utils/helpers";
 
 export default function OrderConfirmationPage() {
     const [order, setOrder] = useState<Order | null>(null);
@@ -150,10 +150,10 @@ export default function OrderConfirmationPage() {
                                         </div>
                                         <div className="text-right py-1">
                                             <p className="text-white font-medium text-sm">
-                                                {formatPriceUSD(item.product.price * item.quantity)}
+                                                {formatPrice(item.product.price * item.quantity)}
                                             </p>
                                             <p className="text-[10px] text-neutral-600 mt-1">
-                                                {formatPriceUSD(item.product.price)} ea
+                                                {formatPrice(item.product.price)} ea
                                             </p>
                                         </div>
                                     </div>
@@ -194,18 +194,18 @@ export default function OrderConfirmationPage() {
                             <div className="space-y-4 pb-6 border-b border-white/5">
                                 <div className="flex justify-between text-sm">
                                     <span className="text-neutral-400">Subtotal</span>
-                                    <span className="text-white">{formatPriceUSD(order.subtotal)}</span>
+                                    <span className="text-white">{formatPrice(order.subtotal)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm">
                                     <span className="text-neutral-400">Shipping</span>
                                     <span className="text-white">
-                                        {order.shippingCost === 0 ? "Complimentary" : formatPriceUSD(order.shippingCost)}
+                                        {order.shippingCost === 0 ? "Complimentary" : formatPrice(order.shippingCost)}
                                     </span>
                                 </div>
                             </div>
                             <div className="flex justify-between pt-6 text-lg font-medium text-white mb-8">
                                 <span>Total</span>
-                                <span>{formatPriceUSD(order.total)}</span>
+                                <span>{formatPrice(order.total)}</span>
                             </div>
 
                             <Link

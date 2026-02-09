@@ -1,18 +1,37 @@
-"use client";
-
-import { use } from "react";
+import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { collections, products } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import { ChevronLeft } from "lucide-react";
 
-export default function CollectionDetailPage({
-    params,
-}: {
+type Props = {
     params: Promise<{ id: string }>;
-}) {
-    const { id } = use(params);
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const { id } = await params;
+    const collection = collections.find((c) => c.id === id);
+
+    if (!collection) {
+        return {
+            title: "Collection Not Found | VEYRAL",
+        };
+    }
+
+    return {
+        title: `${collection.title} | VEYRAL`,
+        description: collection.description,
+        openGraph: {
+            title: `${collection.title} | VEYRAL`,
+            description: collection.description,
+            images: [collection.image],
+        },
+    };
+}
+
+export default async function CollectionDetailPage({ params }: Props) {
+    const { id } = await params;
     const collection = collections.find((c) => c.id === id);
 
     if (!collection) {

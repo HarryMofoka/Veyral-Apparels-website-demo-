@@ -19,7 +19,7 @@ import {
     ShoppingCart,
 } from "lucide-react";
 import { getOrders, Order } from "@/utils/order";
-import { formatPriceUSD } from "@/utils/helpers";
+import { formatPrice } from "@/utils/helpers";
 
 const ORDERS_KEY = "veyral_orders";
 
@@ -190,7 +190,7 @@ export default function AdminOrdersPage() {
                                             {order.status}
                                         </span>
                                         <p className="text-sm font-medium text-white">
-                                            {formatPriceUSD(order.total)}
+                                            {formatPrice(order.total)}
                                         </p>
                                         {expandedOrder === order.id ? (
                                             <ChevronUp className="w-4 h-4 text-neutral-500" />
@@ -256,7 +256,7 @@ export default function AdminOrdersPage() {
                                                         </p>
                                                     </div>
                                                     <p className="text-sm text-white font-medium">
-                                                        {formatPriceUSD(
+                                                        {formatPrice(
                                                             (item.product?.price || 0) * item.quantity
                                                         )}
                                                     </p>
@@ -289,13 +289,13 @@ export default function AdminOrdersPage() {
                                         </div>
                                         <div className="text-right">
                                             <p className="text-xs text-neutral-500">
-                                                Subtotal: {formatPriceUSD(order.subtotal)}
+                                                Subtotal: {formatPrice(order.subtotal)}
                                             </p>
                                             <p className="text-xs text-neutral-500">
-                                                Shipping: {formatPriceUSD(order.shippingCost)}
+                                                Shipping: {formatPrice(order.shippingCost)}
                                             </p>
                                             <p className="text-lg font-medium text-white mt-1">
-                                                Total: {formatPriceUSD(order.total)}
+                                                Total: {formatPrice(order.total)}
                                             </p>
                                         </div>
                                     </div>

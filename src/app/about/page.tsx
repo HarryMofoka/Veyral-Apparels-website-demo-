@@ -1,7 +1,11 @@
-"use client";
-
+import { Metadata } from "next";
 import Image from "next/image";
 import { ArrowRight, Box, Shield, Zap } from "lucide-react";
+
+export const metadata: Metadata = {
+    title: "About VEYRAL | Design Laboratory",
+    description: "VEYRAL is an experimental design laboratory focused on the intersection of utility, minimalism, and advanced material science.",
+};
 
 export default function AboutPage() {
     return (

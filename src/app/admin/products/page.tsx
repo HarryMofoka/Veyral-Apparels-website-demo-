@@ -21,7 +21,7 @@ import {
     Package,
 } from "lucide-react";
 import { products as initialProducts, Product } from "@/data/products";
-import { formatPriceUSD } from "@/utils/helpers";
+import { formatPrice } from "@/utils/helpers";
 
 // LocalStorage key for product modifications
 const PRODUCTS_KEY = "veyral_admin_products";
@@ -226,7 +226,7 @@ export default function AdminProductsPage() {
                                         {product.category}
                                     </td>
                                     <td className="px-6 py-4 font-medium text-white text-sm">
-                                        {formatPriceUSD(product.price)}
+                                        {formatPrice(product.price)}
                                     </td>
                                     <td className="px-6 py-4">
                                         {editingStock === product.id ? (
@@ -269,18 +269,18 @@ export default function AdminProductsPage() {
                                     <td className="px-6 py-4">
                                         <span
                                             className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] uppercase tracking-wider border ${product.stock === 0
-                                                    ? "bg-red-500/10 text-red-400 border-red-500/20"
-                                                    : product.stock < 10
-                                                        ? "bg-amber-500/10 text-amber-400 border-amber-500/20"
-                                                        : "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                                                ? "bg-red-500/10 text-red-400 border-red-500/20"
+                                                : product.stock < 10
+                                                    ? "bg-amber-500/10 text-amber-400 border-amber-500/20"
+                                                    : "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
                                                 }`}
                                         >
                                             <span
                                                 className={`w-1 h-1 rounded-full ${product.stock === 0
-                                                        ? "bg-red-400"
-                                                        : product.stock < 10
-                                                            ? "bg-amber-400"
-                                                            : "bg-emerald-400"
+                                                    ? "bg-red-400"
+                                                    : product.stock < 10
+                                                        ? "bg-amber-400"
+                                                        : "bg-emerald-400"
                                                     }`}
                                             />
                                             {product.stock === 0

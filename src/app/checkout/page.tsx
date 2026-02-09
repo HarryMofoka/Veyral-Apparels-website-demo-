@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getCart, getCartTotal, clearCart, CartItem } from "@/utils/cart";
-import { formatPriceUSD } from "@/utils/helpers";
+import { formatPrice } from "@/utils/helpers";
 import { saveOrder, generateOrderId, generatePaymentId } from "@/utils/order";
 import { ArrowRight } from "lucide-react";
 
@@ -206,7 +206,7 @@ export default function CheckoutPage() {
                                 disabled={isSubmitting}
                                 className="w-full bg-white text-black hover:bg-neutral-200 disabled:bg-neutral-700 disabled:text-neutral-500 py-4 rounded font-bold uppercase tracking-widest text-sm transition-colors flex items-center justify-center gap-2"
                             >
-                                {isSubmitting ? "Processing..." : `Pay ${formatPriceUSD(total)}`} <ArrowRight className="w-4 h-4" />
+                                {isSubmitting ? "Processing..." : `Pay ${formatPrice(total)}`} <ArrowRight className="w-4 h-4" />
                             </button>
                         </form>
 
@@ -226,7 +226,7 @@ export default function CheckoutPage() {
                                                 {item.selectedSize} / {item.selectedColor} × {item.quantity}
                                             </p>
                                         </div>
-                                        <span className="text-white">{formatPriceUSD(item.product.price * item.quantity)}</span>
+                                        <span className="text-white">{formatPrice(item.product.price * item.quantity)}</span>
                                     </div>
                                 ))}
                             </div>
@@ -234,17 +234,17 @@ export default function CheckoutPage() {
                             <div className="border-t border-white/10 pt-4 space-y-2 text-sm">
                                 <div className="flex justify-between">
                                     <span className="text-neutral-400">Subtotal</span>
-                                    <span className="text-white">{formatPriceUSD(subtotal)}</span>
+                                    <span className="text-white">{formatPrice(subtotal)}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-neutral-400">Shipping</span>
                                     <span className="text-white">
-                                        {shipping === 0 ? "Included" : formatPriceUSD(shipping)}
+                                        {shipping === 0 ? "Included" : formatPrice(shipping)}
                                     </span>
                                 </div>
                                 <div className="flex justify-between text-base font-bold pt-4 border-t border-white/10 text-white mt-2">
                                     <span>Total</span>
-                                    <span>{formatPriceUSD(total)}</span>
+                                    <span>{formatPrice(total)}</span>
                                 </div>
                             </div>
                         </div>

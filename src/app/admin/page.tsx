@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import { products } from "@/data/products";
 import { getOrders, Order } from "@/utils/order";
-import { formatPriceUSD } from "@/utils/helpers";
+import { formatPrice } from "@/utils/helpers";
 import StatCard from "@/components/admin/StatCard";
 import SimpleChart from "@/components/admin/SimpleChart";
 
@@ -126,7 +126,7 @@ export default function AdminDashboard() {
                 <StatCard
                     icon={<DollarSign className="w-4 h-4" />}
                     label="Total Sales"
-                    value={formatPriceUSD(totalSales)}
+                    value={formatPrice(totalSales)}
                 />
                 <StatCard
                     icon={<Package className="w-4 h-4" />}
@@ -279,7 +279,7 @@ export default function AdminDashboard() {
                                             </p>
                                         </td>
                                         <td className="px-6 py-4 text-sm font-medium text-white">
-                                            {formatPriceUSD(order.total)}
+                                            {formatPrice(order.total)}
                                         </td>
                                         <td className="px-6 py-4">
                                             <span

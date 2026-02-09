@@ -227,3 +227,145 @@ body {
 .animate-shimmer {
   animation: shimmer 1.5s infinite;
 }
+
+/* ============================================
+   13. PRINT STYLES (Receipt)
+   Clean, branded print layout for order receipts
+   ============================================ */
+@media print {
+
+  /* Reset page margins for clean printing */
+  @page {
+    margin: 1.5cm;
+    size: A4;
+  }
+
+  /* White background for printing */
+  html,
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Hide non-essential elements */
+  nav,
+  footer,
+  button,
+  .no-print,
+  [aria-hidden="true"] {
+    display: none !important;
+  }
+
+  /* Show print-only elements */
+  .print-only {
+    display: block !important;
+  }
+
+  /* Main content styling */
+  main,
+  [role="main"] {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Typography adjustments */
+  h1 {
+    font-size: 24pt !important;
+    margin-bottom: 12pt !important;
+    color: black !important;
+    font-weight: 600 !important;
+  }
+
+  h2 {
+    font-size: 14pt !important;
+    margin-bottom: 8pt !important;
+    color: black !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    border-bottom: 1px solid #ccc !important;
+    padding-bottom: 4pt !important;
+  }
+
+  /* All text should be black */
+  p,
+  span,
+  div,
+  td,
+  th {
+    color: black !important;
+  }
+
+  /* Borders visible for structure */
+  .border,
+  [class*="border-"] {
+    border-color: #ccc !important;
+  }
+
+  /* Background colors become white/light gray */
+  [class*="bg-neutral"],
+  [class*="bg-white/"],
+  [class*="bg-black"] {
+    background-color: white !important;
+  }
+
+  /* Order info boxes */
+  .print-receipt-box {
+    border: 1px solid #ddd !important;
+    padding: 12pt !important;
+    margin-bottom: 12pt !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Images smaller for print */
+  img {
+    max-width: 60px !important;
+    height: auto !important;
+    opacity: 1 !important;
+  }
+
+  /* Grid becomes flex columns */
+  .grid {
+    display: block !important;
+  }
+
+  /* Links don't need underlines in print */
+  a {
+    text-decoration: none !important;
+    color: black !important;
+  }
+
+  /* Receipt header branding */
+  .print-header {
+    text-align: center !important;
+    padding-bottom: 20pt !important;
+    margin-bottom: 20pt !important;
+    border-bottom: 2px solid black !important;
+  }
+
+  .print-header h1 {
+    font-size: 28pt !important;
+    letter-spacing: 0.2em !important;
+    font-weight: 500 !important;
+    margin: 0 !important;
+  }
+
+  .print-header p {
+    font-size: 9pt !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.15em !important;
+    margin-top: 4pt !important;
+    color: #666 !important;
+  }
+
+  /* Footer branding */
+  .print-footer {
+    margin-top: 30pt !important;
+    padding-top: 15pt !important;
+    border-top: 1px solid #ccc !important;
+    text-align: center !important;
+    font-size: 9pt !important;
+    color: #666 !important;
+  }
+}

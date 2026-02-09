@@ -18,7 +18,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Product } from "@/data/products";
-import { formatPriceUSD } from "@/utils/helpers";
+import { formatPrice } from "@/utils/helpers";
 
 /**
  * Props interface for ProductCard
@@ -152,12 +152,12 @@ export default function ProductCard({ product }: ProductCardProps) {
                 {/* Pricing section with optional strikethrough for discounted items */}
                 <div className="flex flex-col items-end">
                     <span className="text-white font-medium text-sm">
-                        {formatPriceUSD(product.price)}
+                        {formatPrice(product.price)}
                     </span>
                     {/* Show original price if item is discounted */}
                     {product.originalPrice && (
                         <span className="text-neutral-600 line-through text-xs">
-                            {formatPriceUSD(product.originalPrice)}
+                            {formatPrice(product.originalPrice)}
                         </span>
                     )}
                 </div>

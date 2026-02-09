@@ -10,7 +10,7 @@ import {
     getCartTotal,
     CartItem as CartItemType,
 } from "@/utils/cart";
-import { formatPriceUSD } from "@/utils/helpers";
+import { formatPrice } from "@/utils/helpers";
 import CartItem from "@/components/CartItem";
 
 export default function CartPage() {
@@ -142,17 +142,17 @@ export default function CartPage() {
                                 <div className="space-y-4 mb-6 text-sm">
                                     <div className="flex justify-between">
                                         <span className="text-neutral-400">Subtotal</span>
-                                        <span className="text-white">{formatPriceUSD(subtotal)}</span>
+                                        <span className="text-white">{formatPrice(subtotal)}</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-neutral-400">Shipping</span>
                                         <span className="text-white">
-                                            {shipping === 0 ? "Included" : formatPriceUSD(shipping)}
+                                            {shipping === 0 ? "Included" : formatPrice(shipping)}
                                         </span>
                                     </div>
                                     {shipping > 0 && (
                                         <p className="text-xs text-neutral-500 pt-2 border-t border-white/5 mt-2">
-                                            Add {formatPriceUSD(100 - subtotal)} for standard shipping.
+                                            Add {formatPrice(100 - subtotal)} for standard shipping.
                                         </p>
                                     )}
                                 </div>
@@ -160,7 +160,7 @@ export default function CartPage() {
                                 <div className="border-t border-white/10 pt-4 mb-8">
                                     <div className="flex justify-between text-base font-medium text-white">
                                         <span>Total</span>
-                                        <span>{formatPriceUSD(total)}</span>
+                                        <span>{formatPrice(total)}</span>
                                     </div>
                                     <p className="text-[10px] text-neutral-500 mt-2 uppercase tracking-wide">
                                         Taxes calculated at checkout

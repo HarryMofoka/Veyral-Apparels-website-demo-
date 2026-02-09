@@ -16,7 +16,7 @@ import { X, Plus, Minus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-import { formatPriceUSD } from "@/utils/helpers";
+import { formatPrice } from "@/utils/helpers";
 
 export default function CartDrawer() {
     // Extract cart state and actions from context
@@ -168,7 +168,7 @@ export default function CartDrawer() {
                                         {/* Price and remove button */}
                                         <div className="text-right">
                                             <span className="text-white font-medium block">
-                                                {formatPriceUSD(item.product.price * item.quantity)}
+                                                {formatPrice(item.product.price * item.quantity)}
                                             </span>
                                             <button
                                                 onClick={() =>
@@ -202,7 +202,7 @@ export default function CartDrawer() {
                         <div className="flex justify-between text-xs mb-6">
                             <span className="text-neutral-400">Total</span>
                             <span className="text-white font-medium">
-                                {formatPriceUSD(total)}
+                                {formatPrice(total)}
                             </span>
                         </div>
                         {/* Checkout button - closes drawer and navigates to checkout */}

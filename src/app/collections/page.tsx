@@ -1,7 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Metadata } from "next";
 import { collections, products } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
+
+export const metadata: Metadata = {
+    title: "Collections | VEYRAL",
+    description: "Explore VEYRAL's curated collections. Thematic systems designed for specific environments and use-cases.",
+};
 
 export default function CollectionsPage() {
     return (

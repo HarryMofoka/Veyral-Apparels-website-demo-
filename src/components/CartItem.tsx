@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Trash2, Minus, Plus } from "lucide-react";
 import { CartItem as CartItemType } from "@/utils/cart";
-import { formatPriceUSD } from "@/utils/helpers";
+import { formatPrice } from "@/utils/helpers";
 
 interface CartItemProps {
     item: CartItemType;
@@ -41,7 +41,7 @@ export default function CartItem({
                         </p>
                     </div>
                     <p className="font-medium text-white text-sm">
-                        {formatPriceUSD(product.price * quantity)}
+                        {formatPrice(product.price * quantity)}
                     </p>
                 </div>
 

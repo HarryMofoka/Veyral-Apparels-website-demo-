@@ -35,7 +35,7 @@ import {
     Check,
 } from "lucide-react";
 import { getOrders, Order } from "@/utils/order";
-import { formatPriceUSD } from "@/utils/helpers";
+import { formatPrice } from "@/utils/helpers";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 
@@ -335,7 +335,7 @@ export default function AccountPage() {
                             </span>
                         </div>
                         <p className="text-2xl font-medium text-white">
-                            {formatPriceUSD(totalSpent)}
+                            {formatPrice(totalSpent)}
                         </p>
                     </div>
                 </div>
@@ -434,7 +434,7 @@ export default function AccountPage() {
                                                     {order.status}
                                                 </span>
                                                 <p className="text-sm font-medium text-white">
-                                                    {formatPriceUSD(order.total)}
+                                                    {formatPrice(order.total)}
                                                 </p>
                                                 {expandedOrder === order.id ? (
                                                     <ChevronUp className="w-4 h-4 text-neutral-500" />
@@ -480,7 +480,7 @@ export default function AccountPage() {
                                                                 </div>
                                                             </div>
                                                             <p className="text-sm text-white font-medium">
-                                                                {formatPriceUSD(
+                                                                {formatPrice(
                                                                     (item.product?.price || 0) * item.quantity
                                                                 )}
                                                             </p>
@@ -509,7 +509,7 @@ export default function AccountPage() {
                                                 <div className="flex justify-between text-sm mb-2">
                                                     <span className="text-neutral-500">Subtotal</span>
                                                     <span className="text-white">
-                                                        {formatPriceUSD(order.subtotal)}
+                                                        {formatPrice(order.subtotal)}
                                                     </span>
                                                 </div>
                                                 <div className="flex justify-between text-sm mb-2">
@@ -517,13 +517,13 @@ export default function AccountPage() {
                                                     <span className="text-white">
                                                         {order.shippingCost === 0
                                                             ? "Free"
-                                                            : formatPriceUSD(order.shippingCost)}
+                                                            : formatPrice(order.shippingCost)}
                                                     </span>
                                                 </div>
                                                 <div className="flex justify-between text-base font-medium pt-2 border-t border-white/5">
                                                     <span className="text-white">Total</span>
                                                     <span className="text-white">
-                                                        {formatPriceUSD(order.total)}
+                                                        {formatPrice(order.total)}
                                                     </span>
                                                 </div>
                                             </div>
