@@ -15,6 +15,18 @@
 
 ---
 
+## 👤 Demo User Account
+
+| Field | Value |
+|-------|-------|
+| **Account URL** | `/account` |
+| **Email** | `demo@veyral.com` |
+| **Password** | `demo123` |
+
+Alternative: `test@example.com` / `test123`
+
+---
+
 ## ✅ Completed Features
 
 ### Phase 1: Core Foundation

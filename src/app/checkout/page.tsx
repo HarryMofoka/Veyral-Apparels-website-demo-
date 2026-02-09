@@ -1,17 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getCart, getCartTotal, clearCart, CartItem } from "@/utils/cart";
-import { formatPriceUSD, generateOrderId } from "@/utils/helpers";
-import { CheckCircle, ArrowRight } from "lucide-react";
+import { formatPriceUSD } from "@/utils/helpers";
+import { saveOrder, generateOrderId, generatePaymentId } from "@/utils/order";
+import { ArrowRight } from "lucide-react";
 
 export default function CheckoutPage() {
+    const router = useRouter();
     const [cart, setCart] = useState<CartItem[]>([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [orderComplete, setOrderComplete] = useState(false);
-    const [orderId, setOrderId] = useState("");
 
     const [formData, setFormData] = useState({
         email: "",
@@ -44,11 +45,38 @@ export default function CheckoutPage() {
         // Simulate order processing
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
-        const newOrderId = generateOrderId();
-        setOrderId(newOrderId);
+        // Create and save order
+        const order = {
+            id: generateOrderId(),
+            paymentId: generatePaymentId(),
+            items: cart,
+            shipping: {
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                email: formData.email,
+                phone: formData.phone,
+                address: formData.address,
+                city: formData.city,
+                state: formData.province,
+                zipCode: formData.postalCode,
+                country: "United States",
+            },
+            subtotal,
+            shippingCost: shipping,
+            total,
+            status: "confirmed" as const,
+            createdAt: new Date().toISOString(),
+        };
+
+        // Save order to localStorage (history + current)
+        saveOrder(order);
+
+        // Clear cart
         clearCart();
-        setOrderComplete(true);
         window.dispatchEvent(new Event("cartUpdated"));
+
+        // Redirect to confirmation page
+        router.push("/order-confirmation");
     };
 
     if (!isLoaded) {
@@ -56,39 +84,6 @@ export default function CheckoutPage() {
             <div className="min-h-screen bg-[#030303] flex items-center justify-center">
                 <div className="text-white animate-pulse text-sm tracking-widest uppercase">
                     Loading System...
-                </div>
-            </div>
-        );
-    }
-
-    if (orderComplete) {
-        return (
-            <div className="min-h-screen bg-[#030303] flex items-center justify-center">
-                <div className="text-center max-w-md mx-auto px-6 fade-up">
-                    <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-8 border border-white/20">
-                        <CheckCircle className="w-8 h-8 text-white" />
-                    </div>
-                    <h1 className="text-3xl font-medium text-white mb-4 tracking-tight">
-                        Order Confirmed
-                    </h1>
-                    <p className="text-neutral-400 mb-2 text-sm">
-                        Transaction processed successfully.
-                    </p>
-                    <div className="bg-white/5 border border-white/10 rounded p-4 my-6">
-                        <p className="text-neutral-500 text-xs uppercase tracking-widest mb-1">
-                            Order ID
-                        </p>
-                        <p className="text-white font-mono text-lg">{orderId}</p>
-                    </div>
-                    <p className="text-neutral-500 text-xs mb-8">
-                        Digital receipt sent to {formData.email}
-                    </p>
-                    <Link
-                        href="/shop"
-                        className="bg-white text-black px-8 py-3 rounded text-sm font-medium hover:bg-neutral-200 transition-colors inline-block"
-                    >
-                        Return to Catalog
-                    </Link>
                 </div>
             </div>
         );
