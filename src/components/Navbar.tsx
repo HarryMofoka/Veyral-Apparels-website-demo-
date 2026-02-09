@@ -16,10 +16,14 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Search, User, ShoppingBag, Menu, X } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Navbar() {
     // Access cart context for toggle functionality and item count display
     const { toggleCart, itemCount } = useCart();
+
+    // Access auth context for user state
+    const { isAuthenticated } = useAuth();
 
     // Track scroll position to apply glass-panel effect when scrolled
     const [isScrolled, setIsScrolled] = useState(false);
@@ -129,12 +133,17 @@ export default function Navbar() {
                         >
                             <Search className="w-5 h-5" />
                         </button>
-                        <button
-                            className="text-neutral-500 hover:text-white transition-colors"
+                        <Link
+                            href="/account"
+                            className="text-neutral-500 hover:text-white transition-colors relative"
                             aria-label="User account"
                         >
                             <User className="w-5 h-5" />
-                        </button>
+                            {/* Auth indicator - green dot when logged in */}
+                            {isAuthenticated && (
+                                <span className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-400 rounded-full" />
+                            )}
+                        </Link>
                         <button
                             onClick={toggleCart}
                             className="text-neutral-500 hover:text-white transition-colors relative"
@@ -168,8 +177,8 @@ export default function Navbar() {
               */}
             <div
                 className={`fixed inset-0 bg-[#030303] z-40 transition-all duration-500 flex flex-col items-center justify-center space-y-6 ${isMobileMenuOpen
-                        ? "translate-x-0 visible pointer-events-auto"
-                        : "-translate-x-full invisible pointer-events-none"
+                    ? "translate-x-0 visible pointer-events-auto"
+                    : "-translate-x-full invisible pointer-events-none"
                     }`}
                 aria-hidden={!isMobileMenuOpen}
             >
@@ -209,6 +218,13 @@ export default function Navbar() {
                     className="text-2xl font-light tracking-tight text-white hover:text-neutral-400 transition-colors"
                 >
                     Manifesto
+                </Link>
+                <Link
+                    href="/account"
+                    onClick={toggleMenu}
+                    className="text-2xl font-light tracking-tight text-white hover:text-neutral-400 transition-colors"
+                >
+                    Account
                 </Link>
             </div>
         </>
